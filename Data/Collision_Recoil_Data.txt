@@ -1,0 +1,557 @@
+﻿========================================
+PUBG Mobile - Collision & Recoil Report
+========================================
+Generated: 2026/6/9 23:19:01
+
+========================================
+WEAPON RECOIL CURVES
+========================================
+
+Found 25 recoil curve files
+
+--- C_Recoil_AKM ---
+  FloatCurves (4 keys):
+    [0] Time=0.002299 Value=0.010000 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+    [1] Time=1.058864 Value=0.154542 ArriveTangent=0.107401 LeaveTangent=0.107403 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+    [2] Time=2.667709 Value=1.017016 ArriveTangent=0.556423 LeaveTangent=0.556423 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+    [3] Time=4.740380 Value=1.106971 ArriveTangent=0.110614 LeaveTangent=0.110611 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+  FloatCurves (5 keys):
+    [0] Time=0.001304 Value=0.600000 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+    [1] Time=0.300000 Value=0.500000 ArriveTangent=0.229716 LeaveTangent=0.229716 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+    [2] Time=1.939035 Value=1.045127 ArriveTangent=0.402559 LeaveTangent=0.402557 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+    [3] Time=3.500000 Value=1.341444 ArriveTangent=0.167732 LeaveTangent=0.167733 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+    [4] Time=4.390445 Value=0.735211 ArriveTangent=0.000000 LeaveTangent=-0.303860 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+  FloatCurves (2 keys):
+    [0] Time=0.002299 Value=0.000000 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+    [1] Time=3.289196 Value=1.773539 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Linear TangentMode=RCTM_Auto
+
+--- C_Recoil_DP12 ---
+  FloatCurves (1 keys):
+    [0] Time=0.000000 Value=0.850000 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+  FloatCurves (1 keys):
+    [0] Time=0.000000 Value=1.500000 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Linear TangentMode=RCTM_Auto
+  FloatCurves (2 keys):
+    [0] Time=0.002299 Value=0.000000 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+    [1] Time=3.289196 Value=1.773539 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Linear TangentMode=RCTM_Auto
+
+--- C_Recoil_FAL ---
+  FloatCurves (4 keys):
+    [0] Time=0.000000 Value=0.078000 ArriveTangent=0.028109 LeaveTangent=0.028111 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+    [1] Time=0.400000 Value=0.130000 ArriveTangent=0.346687 LeaveTangent=0.346683 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+    [2] Time=1.200000 Value=0.400000 ArriveTangent=0.474736 LeaveTangent=0.474730 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+    [3] Time=1.800000 Value=0.550000 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Linear TangentMode=RCTM_Auto
+  FloatCurves (4 keys):
+    [0] Time=0.000000 Value=0.500000 ArriveTangent=0.118422 LeaveTangent=0.118423 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+    [1] Time=0.330000 Value=0.650000 ArriveTangent=1.076560 LeaveTangent=1.076554 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+    [2] Time=1.200000 Value=1.350000 ArriveTangent=0.553699 LeaveTangent=0.553699 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+    [3] Time=2.200000 Value=1.700000 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Linear TangentMode=RCTM_Auto
+  FloatCurves (2 keys):
+    [0] Time=0.000000 Value=0.000000 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+    [1] Time=3.000000 Value=1.750000 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Linear TangentMode=RCTM_Auto
+
+--- C_Recoil_G36 ---
+  FloatCurves (3 keys):
+    [0] Time=0.000000 Value=0.027000 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+    [1] Time=0.750000 Value=0.150000 ArriveTangent=0.164094 LeaveTangent=0.164090 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+    [2] Time=2.930000 Value=0.340000 ArriveTangent=0.264509 LeaveTangent=0.264515 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+  FloatCurves (4 keys):
+    [0] Time=0.000000 Value=0.320000 ArriveTangent=0.011103 LeaveTangent=0.011101 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+    [1] Time=1.499408 Value=0.717576 ArriveTangent=0.293188 LeaveTangent=0.293187 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+    [2] Time=2.500000 Value=0.980000 ArriveTangent=0.085447 LeaveTangent=0.253723 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+    [3] Time=2.800000 Value=1.100000 ArriveTangent=1.080392 LeaveTangent=1.080389 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+  FloatCurves (2 keys):
+    [0] Time=0.000000 Value=0.000000 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+    [1] Time=3.300000 Value=2.000000 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Linear TangentMode=RCTM_Auto
+
+--- C_Recoil_Groza ---
+  FloatCurves (4 keys):
+    [0] Time=0.002299 Value=0.100000 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+    [1] Time=1.202415 Value=0.109973 ArriveTangent=0.107401 LeaveTangent=0.107403 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+    [2] Time=3.288697 Value=0.599102 ArriveTangent=0.556423 LeaveTangent=0.556423 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+    [3] Time=4.740380 Value=1.106971 ArriveTangent=0.110614 LeaveTangent=0.110611 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+  FloatCurves (5 keys):
+    [0] Time=0.001304 Value=0.600000 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+    [1] Time=0.300000 Value=0.500000 ArriveTangent=0.049667 LeaveTangent=0.049667 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+    [2] Time=2.398078 Value=0.719041 ArriveTangent=0.402559 LeaveTangent=0.402557 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+    [3] Time=3.500000 Value=1.341444 ArriveTangent=0.167732 LeaveTangent=0.167733 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+    [4] Time=4.390445 Value=0.735211 ArriveTangent=0.000000 LeaveTangent=-0.303860 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+  FloatCurves (2 keys):
+    [0] Time=0.002299 Value=0.000000 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+    [1] Time=3.289196 Value=1.773539 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Linear TangentMode=RCTM_Auto
+
+--- C_Recoil_HK416 ---
+  FloatCurves (3 keys):
+    [0] Time=0.000000 Value=0.030000 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+    [1] Time=1.499452 Value=0.169943 ArriveTangent=0.226059 LeaveTangent=0.226060 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+    [2] Time=3.014152 Value=0.600000 ArriveTangent=0.556423 LeaveTangent=0.556423 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+  FloatCurves (4 keys):
+    [0] Time=0.000000 Value=0.350000 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+    [1] Time=1.370188 Value=0.799626 ArriveTangent=0.301024 LeaveTangent=0.301024 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+    [2] Time=1.993194 Value=0.950000 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Linear TangentMode=RCTM_Auto
+    [3] Time=3.460272 Value=1.000000 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Linear TangentMode=RCTM_Auto
+  FloatCurves (2 keys):
+    [0] Time=0.002299 Value=0.000000 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+    [1] Time=3.289196 Value=1.773539 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Linear TangentMode=RCTM_Auto
+
+--- C_Recoil_K98 ---
+  FloatCurves (4 keys):
+    [0] Time=0.002299 Value=0.000000 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+    [1] Time=1.058864 Value=0.154542 ArriveTangent=0.107401 LeaveTangent=0.107403 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+    [2] Time=2.667709 Value=1.017016 ArriveTangent=0.556423 LeaveTangent=0.556423 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+    [3] Time=4.740380 Value=1.106971 ArriveTangent=0.110614 LeaveTangent=0.110611 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+  FloatCurves (5 keys):
+    [0] Time=-0.004143 Value=0.231787 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+    [1] Time=0.294553 Value=0.131787 ArriveTangent=0.418562 LeaveTangent=0.418562 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+    [2] Time=1.939035 Value=1.045127 ArriveTangent=0.402559 LeaveTangent=0.402557 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+    [3] Time=3.500000 Value=1.341444 ArriveTangent=0.167732 LeaveTangent=0.167733 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+    [4] Time=4.390445 Value=0.735211 ArriveTangent=0.000000 LeaveTangent=-0.303860 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+  FloatCurves (2 keys):
+    [0] Time=0.002299 Value=0.000000 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+    [1] Time=3.289196 Value=1.773539 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Linear TangentMode=RCTM_Auto
+
+--- C_Recoil_M14_OneBurst ---
+  FloatCurves (4 keys):
+    [0] Time=0.004028 Value=0.113721 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+    [1] Time=1.415554 Value=0.426689 ArriveTangent=0.289357 LeaveTangent=0.289357 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+    [2] Time=2.657900 Value=0.881637 ArriveTangent=0.280186 LeaveTangent=0.280185 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+    [3] Time=4.745365 Value=0.850083 ArriveTangent=0.000000 LeaveTangent=0.110611 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+  FloatCurves (5 keys):
+    [0] Time=0.001036 Value=0.600572 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+    [1] Time=0.765081 Value=0.699988 ArriveTangent=0.198533 LeaveTangent=0.198533 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+    [2] Time=1.836455 Value=0.964964 ArriveTangent=0.237564 LeaveTangent=0.237563 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+    [3] Time=3.496107 Value=1.100572 ArriveTangent=-0.008759 LeaveTangent=-0.008758 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+    [4] Time=4.376346 Value=0.748914 ArriveTangent=0.000000 LeaveTangent=-0.303860 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+  FloatCurves (2 keys):
+    [0] Time=0.002299 Value=0.000000 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+    [1] Time=3.289196 Value=1.773539 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Linear TangentMode=RCTM_Auto
+
+--- C_Recoil_M14 ---
+  FloatCurves (4 keys):
+    [0] Time=0.004028 Value=0.113721 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+    [1] Time=1.415554 Value=0.426689 ArriveTangent=0.188665 LeaveTangent=0.188667 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+    [2] Time=2.667709 Value=1.017016 ArriveTangent=0.556423 LeaveTangent=0.556423 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+    [3] Time=4.740380 Value=1.106971 ArriveTangent=0.110614 LeaveTangent=0.110611 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+  FloatCurves (5 keys):
+    [0] Time=0.004929 Value=0.900000 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+    [1] Time=0.358097 Value=1.000000 ArriveTangent=0.295936 LeaveTangent=0.295936 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+    [2] Time=1.897655 Value=1.460126 ArriveTangent=0.237564 LeaveTangent=0.237563 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+    [3] Time=3.500263 Value=1.679957 ArriveTangent=-0.008759 LeaveTangent=-0.008758 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+    [4] Time=4.409409 Value=1.040451 ArriveTangent=0.000000 LeaveTangent=-0.303860 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+  FloatCurves (2 keys):
+    [0] Time=0.002299 Value=0.000000 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+    [1] Time=3.289196 Value=1.773539 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Linear TangentMode=RCTM_Auto
+
+--- C_Recoil_M16A4 ---
+  FloatCurves (3 keys):
+    [0] Time=0.000000 Value=0.020000 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+    [1] Time=0.958535 Value=0.141832 ArriveTangent=0.226059 LeaveTangent=0.226060 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+    [2] Time=2.946136 Value=0.500000 ArriveTangent=0.556423 LeaveTangent=0.556423 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+  FloatCurves (5 keys):
+    [0] Time=0.000000 Value=0.450000 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+    [1] Time=0.546882 Value=0.500000 ArriveTangent=0.214023 LeaveTangent=0.214023 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+    [2] Time=1.868962 Value=0.850000 ArriveTangent=0.254263 LeaveTangent=0.254265 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+    [3] Time=2.699109 Value=1.082608 ArriveTangent=0.015164 LeaveTangent=0.015164 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+    [4] Time=3.460272 Value=0.874131 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Linear TangentMode=RCTM_Auto
+  FloatCurves (2 keys):
+    [0] Time=0.002299 Value=0.000000 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+    [1] Time=3.289196 Value=1.773539 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Linear TangentMode=RCTM_Auto
+
+--- C_Recoil_M249 ---
+  FloatCurves (4 keys):
+    [0] Time=0.000000 Value=0.050000 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+    [1] Time=1.737042 Value=0.194096 ArriveTangent=0.226059 LeaveTangent=0.226060 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+    [2] Time=3.382725 Value=0.839988 ArriveTangent=0.983470 LeaveTangent=0.983471 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+    [3] Time=3.933445 Value=1.832971 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Linear TangentMode=RCTM_Auto
+  FloatCurves (4 keys):
+    [0] Time=0.000000 Value=0.330000 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+    [1] Time=1.202519 Value=0.459696 ArriveTangent=0.239286 LeaveTangent=0.239286 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+    [2] Time=2.800000 Value=1.000000 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Linear TangentMode=RCTM_Auto
+    [3] Time=3.483150 Value=0.737369 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Linear TangentMode=RCTM_Auto
+  FloatCurves (2 keys):
+    [0] Time=0.000000 Value=0.000000 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+    [1] Time=3.289196 Value=1.773539 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Linear TangentMode=RCTM_Auto
+
+--- C_Recoil_M762 ---
+  FloatCurves (3 keys):
+    [0] Time=0.002299 Value=0.010000 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+    [1] Time=1.058864 Value=0.154542 ArriveTangent=0.037341 LeaveTangent=0.037343 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+    [2] Time=3.000000 Value=0.850000 ArriveTangent=0.355134 LeaveTangent=0.355135 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+  FloatCurves (4 keys):
+    [0] Time=0.001304 Value=0.400000 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+    [1] Time=0.497001 Value=0.510000 ArriveTangent=0.258862 LeaveTangent=0.258862 InterpMode=RCIM_Cubic TangentMode=RCTM_Break
+    [2] Time=3.053124 Value=1.340000 ArriveTangent=0.115762 LeaveTangent=0.115761 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+    [3] Time=3.636991 Value=1.570000 ArriveTangent=0.116085 LeaveTangent=0.116085 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+  FloatCurves (2 keys):
+    [0] Time=0.002299 Value=0.000000 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+    [1] Time=3.300000 Value=1.600000 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Linear TangentMode=RCTM_Auto
+
+--- C_Recoil_Mini14 ---
+  FloatCurves (3 keys):
+    [0] Time=0.000000 Value=0.050000 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+    [1] Time=0.958535 Value=0.200000 ArriveTangent=0.226059 LeaveTangent=0.226060 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+    [2] Time=2.946136 Value=0.500000 ArriveTangent=0.078018 LeaveTangent=0.078019 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+  FloatCurves (5 keys):
+    [0] Time=0.000000 Value=0.450000 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+    [1] Time=0.980411 Value=0.531636 ArriveTangent=0.168305 LeaveTangent=0.168305 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+    [2] Time=1.899173 Value=0.769641 ArriveTangent=0.254263 LeaveTangent=0.254265 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+    [3] Time=2.706569 Value=1.011394 ArriveTangent=0.066933 LeaveTangent=0.066933 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+    [4] Time=3.460272 Value=0.874131 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Linear TangentMode=RCTM_Auto
+  FloatCurves (2 keys):
+    [0] Time=0.002299 Value=0.000000 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+    [1] Time=3.289196 Value=1.773539 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Linear TangentMode=RCTM_Auto
+
+--- C_Recoil_Mk47 ---
+  FloatCurves (3 keys):
+    [0] Time=0.000000 Value=0.020000 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+    [1] Time=0.960000 Value=0.104040 ArriveTangent=0.226059 LeaveTangent=0.226060 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+    [2] Time=2.360000 Value=0.500000 ArriveTangent=0.556423 LeaveTangent=0.556423 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+  FloatCurves (5 keys):
+    [0] Time=0.000000 Value=0.600000 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+    [1] Time=0.596996 Value=0.703667 ArriveTangent=0.463570 LeaveTangent=0.463570 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+    [2] Time=1.500000 Value=0.969236 ArriveTangent=0.139683 LeaveTangent=0.139684 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+    [3] Time=2.500000 Value=1.350000 ArriveTangent=0.043924 LeaveTangent=0.043922 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+    [4] Time=3.252414 Value=1.260345 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Linear TangentMode=RCTM_Auto
+  FloatCurves (2 keys):
+    [0] Time=0.002299 Value=0.000000 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+    [1] Time=3.600000 Value=1.773539 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Linear TangentMode=RCTM_Auto
+
+--- C_Recoil_Pistol_DesertEagle ---
+  FloatCurves (3 keys):
+    [0] Time=0.000000 Value=0.150000 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+    [1] Time=0.930608 Value=0.250000 ArriveTangent=0.226059 LeaveTangent=0.226060 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+    [2] Time=2.946136 Value=0.350000 ArriveTangent=0.169717 LeaveTangent=0.782005 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+  FloatCurves (4 keys):
+    [0] Time=0.000000 Value=0.500000 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+    [1] Time=0.982115 Value=0.800000 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Linear TangentMode=RCTM_Auto
+    [2] Time=2.134197 Value=0.878336 ArriveTangent=0.162043 LeaveTangent=0.162043 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+    [3] Time=3.119880 Value=1.146411 ArriveTangent=0.619125 LeaveTangent=0.619125 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+  FloatCurves (2 keys):
+    [0] Time=0.002299 Value=0.000000 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+    [1] Time=3.289196 Value=1.773539 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Linear TangentMode=RCTM_Auto
+
+--- C_Recoil_Pistol_Generic ---
+  FloatCurves (3 keys):
+    [0] Time=0.000000 Value=0.050000 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+    [1] Time=1.341551 Value=0.175565 ArriveTangent=0.226059 LeaveTangent=0.226060 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+    [2] Time=2.946136 Value=0.750000 ArriveTangent=0.556423 LeaveTangent=0.556423 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+  FloatCurves (4 keys):
+    [0] Time=0.000000 Value=0.300000 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+    [1] Time=0.982115 Value=0.600000 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Linear TangentMode=RCTM_Auto
+    [2] Time=2.125708 Value=0.700000 ArriveTangent=0.255599 LeaveTangent=0.255599 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+    [3] Time=3.119880 Value=1.146411 ArriveTangent=0.619125 LeaveTangent=0.619125 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+  FloatCurves (2 keys):
+    [0] Time=0.002299 Value=0.000000 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+    [1] Time=3.289196 Value=1.773539 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Linear TangentMode=RCTM_Auto
+
+--- C_Recoil_QBZ ---
+  FloatCurves (3 keys):
+    [0] Time=0.000000 Value=0.030000 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+    [1] Time=0.699315 Value=0.070000 ArriveTangent=0.113050 LeaveTangent=0.113048 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+    [2] Time=3.100000 Value=0.620000 ArriveTangent=0.264509 LeaveTangent=0.264515 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+  FloatCurves (4 keys):
+    [0] Time=0.000000 Value=0.280000 ArriveTangent=0.011103 LeaveTangent=0.011101 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+    [1] Time=1.267100 Value=0.670624 ArriveTangent=0.187223 LeaveTangent=0.187221 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+    [2] Time=2.940241 Value=0.850776 ArriveTangent=0.085447 LeaveTangent=0.253723 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+    [3] Time=3.300000 Value=1.080000 ArriveTangent=0.090848 LeaveTangent=0.090848 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+  FloatCurves (2 keys):
+    [0] Time=0.000000 Value=0.000000 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+    [1] Time=3.300000 Value=1.770000 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Linear TangentMode=RCTM_Auto
+
+--- C_Recoil_Saiga ---
+  FloatCurves (3 keys):
+    [0] Time=0.000000 Value=0.700000 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+    [1] Time=1.500000 Value=1.200000 ArriveTangent=0.226059 LeaveTangent=0.226060 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+    [2] Time=2.946136 Value=2.000000 ArriveTangent=0.556423 LeaveTangent=0.556423 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+  FloatCurves (4 keys):
+    [0] Time=0.000000 Value=1.500000 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Linear TangentMode=RCTM_Auto
+    [1] Time=1.017531 Value=2.000000 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Linear TangentMode=RCTM_Auto
+    [2] Time=2.015548 Value=2.200000 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Linear TangentMode=RCTM_Auto
+    [3] Time=3.460272 Value=3.600000 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Linear TangentMode=RCTM_Auto
+  FloatCurves (2 keys):
+    [0] Time=0.002299 Value=0.000000 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+    [1] Time=3.289196 Value=1.773539 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Linear TangentMode=RCTM_Auto
+
+--- C_Recoil_SCAR ---
+  FloatCurves (3 keys):
+    [0] Time=0.002299 Value=0.025000 ArriveTangent=0.079862 LeaveTangent=0.079861 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+    [1] Time=1.877297 Value=0.213046 ArriveTangent=0.226059 LeaveTangent=0.226060 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+    [2] Time=3.014152 Value=0.600000 ArriveTangent=0.556423 LeaveTangent=0.556423 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+  FloatCurves (3 keys):
+    [0] Time=0.000000 Value=0.270000 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+    [1] Time=1.744057 Value=0.865218 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Linear TangentMode=RCTM_Auto
+    [2] Time=3.460272 Value=1.000000 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Linear TangentMode=RCTM_Auto
+  FloatCurves (2 keys):
+    [0] Time=0.002299 Value=0.000000 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+    [1] Time=3.289196 Value=1.773539 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Linear TangentMode=RCTM_Auto
+
+--- C_Recoil_SKS ---
+  FloatCurves (4 keys):
+    [0] Time=0.004028 Value=0.113721 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+    [1] Time=1.115259 Value=0.357349 ArriveTangent=0.107401 LeaveTangent=0.107403 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+    [2] Time=2.667709 Value=1.017016 ArriveTangent=0.556423 LeaveTangent=0.556423 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+    [3] Time=4.740380 Value=1.106971 ArriveTangent=0.110614 LeaveTangent=0.110611 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+  FloatCurves (5 keys):
+    [0] Time=0.004929 Value=0.839656 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+    [1] Time=0.358097 Value=0.852099 ArriveTangent=0.106236 LeaveTangent=0.106236 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+    [2] Time=1.939035 Value=1.045127 ArriveTangent=0.402559 LeaveTangent=0.402557 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+    [3] Time=3.500000 Value=1.341444 ArriveTangent=0.167732 LeaveTangent=0.167733 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+    [4] Time=4.390445 Value=0.735211 ArriveTangent=0.000000 LeaveTangent=-0.303860 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+  FloatCurves (2 keys):
+    [0] Time=0.002299 Value=0.000000 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+    [1] Time=3.289196 Value=1.773539 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Linear TangentMode=RCTM_Auto
+
+--- C_Recoil_SMG_Bizon ---
+  FloatCurves (3 keys):
+    [0] Time=0.000000 Value=0.075000 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Linear TangentMode=RCTM_Auto
+    [1] Time=1.304336 Value=0.391082 ArriveTangent=0.246085 LeaveTangent=0.246085 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+    [2] Time=2.946136 Value=0.800000 ArriveTangent=0.000000 LeaveTangent=0.286690 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+  FloatCurves (4 keys):
+    [0] Time=0.000000 Value=0.425000 ArriveTangent=0.105165 LeaveTangent=0.105165 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+    [1] Time=1.000000 Value=0.630000 ArriveTangent=0.158981 LeaveTangent=0.158979 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+    [2] Time=2.200000 Value=0.800000 ArriveTangent=-0.010520 LeaveTangent=-0.010527 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+    [3] Time=2.950000 Value=0.700000 ArriveTangent=0.001888 LeaveTangent=0.001888 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+  FloatCurves (2 keys):
+    [0] Time=0.000000 Value=0.000000 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+    [1] Time=3.500000 Value=1.500000 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Linear TangentMode=RCTM_Auto
+
+--- C_Recoil_SMG_MP5K ---
+  FloatCurves (5 keys):
+    [0] Time=0.000000 Value=0.080000 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+    [1] Time=0.800000 Value=0.320000 ArriveTangent=0.433140 LeaveTangent=0.433140 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+    [2] Time=2.000000 Value=0.710000 ArriveTangent=0.079391 LeaveTangent=0.079387 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+    [3] Time=2.500000 Value=0.730000 ArriveTangent=0.113044 LeaveTangent=0.113044 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+    [4] Time=3.000000 Value=0.800000 ArriveTangent=0.079796 LeaveTangent=0.079797 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+  FloatCurves (4 keys):
+    [0] Time=0.000000 Value=0.550000 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Linear TangentMode=RCTM_Auto
+    [1] Time=0.982115 Value=0.700000 ArriveTangent=0.166667 LeaveTangent=0.166667 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+    [2] Time=2.100000 Value=0.900000 ArriveTangent=0.074335 LeaveTangent=0.074335 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+    [3] Time=3.000000 Value=0.850000 ArriveTangent=-0.348392 LeaveTangent=-0.348390 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+  FloatCurves (2 keys):
+    [0] Time=0.000000 Value=0.000000 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+    [1] Time=3.500000 Value=1.500000 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Linear TangentMode=RCTM_Auto
+
+--- C_Recoil_SMG_Skorpion ---
+  FloatCurves (3 keys):
+    [0] Time=-0.003906 Value=0.034876 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+    [1] Time=0.250417 Value=0.080677 ArriveTangent=0.066392 LeaveTangent=0.066393 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+    [2] Time=2.000000 Value=0.300000 ArriveTangent=0.291373 LeaveTangent=0.291371 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+  FloatCurves (4 keys):
+    [0] Time=0.000000 Value=0.000000 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+    [1] Time=0.847906 Value=0.238861 ArriveTangent=0.265042 LeaveTangent=0.265041 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+    [2] Time=2.148781 Value=0.450000 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Linear TangentMode=RCTM_Auto
+    [3] Time=3.460272 Value=0.680000 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Linear TangentMode=RCTM_Auto
+  FloatCurves (2 keys):
+    [0] Time=0.000000 Value=0.000000 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+    [1] Time=3.500000 Value=1.850000 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Linear TangentMode=RCTM_Auto
+
+--- C_Recoil_VSS ---
+  FloatCurves (4 keys):
+    [0] Time=0.000000 Value=0.030000 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+    [1] Time=1.274816 Value=0.109973 ArriveTangent=0.037803 LeaveTangent=0.037805 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+    [2] Time=3.018681 Value=0.500000 ArriveTangent=0.100812 LeaveTangent=0.100811 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+    [3] Time=4.699534 Value=0.600000 ArriveTangent=0.110614 LeaveTangent=0.110611 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+  FloatCurves (5 keys):
+    [0] Time=0.000000 Value=0.200000 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+    [1] Time=0.358097 Value=0.220000 ArriveTangent=0.203219 LeaveTangent=0.203219 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+    [2] Time=1.493588 Value=0.503525 ArriveTangent=0.060599 LeaveTangent=0.060599 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+    [3] Time=3.478216 Value=0.800000 ArriveTangent=0.167732 LeaveTangent=0.167733 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+    [4] Time=4.368661 Value=0.700000 ArriveTangent=0.000000 LeaveTangent=-0.303860 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+  FloatCurves (2 keys):
+    [0] Time=0.002299 Value=0.000000 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+    [1] Time=3.289196 Value=1.773539 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Linear TangentMode=RCTM_Auto
+
+--- C_Recoil_Winchester ---
+  FloatCurves (3 keys):
+    [0] Time=0.000000 Value=0.500000 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+    [1] Time=1.500000 Value=0.750000 ArriveTangent=0.226059 LeaveTangent=0.226060 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+    [2] Time=2.946136 Value=1.500000 ArriveTangent=0.556423 LeaveTangent=0.556423 InterpMode=RCIM_Cubic TangentMode=RCTM_User
+  FloatCurves (4 keys):
+    [0] Time=0.000000 Value=1.018061 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Linear TangentMode=RCTM_Auto
+    [1] Time=1.017531 Value=1.226316 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Linear TangentMode=RCTM_Auto
+    [2] Time=2.015548 Value=1.639808 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Linear TangentMode=RCTM_Auto
+    [3] Time=3.460272 Value=2.000000 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Linear TangentMode=RCTM_Auto
+  FloatCurves (2 keys):
+    [0] Time=0.002299 Value=0.000000 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Cubic TangentMode=RCTM_Auto
+    [1] Time=3.289196 Value=1.773539 ArriveTangent=0.000000 LeaveTangent=0.000000 InterpMode=RCIM_Linear TangentMode=RCTM_Auto
+
+========================================
+PLAYER COLLISION VOLUMES (BP_PlayerPawn)
+========================================
+
+Source: C:\Users\Kevin\source\repos\kevin07429\pak\bin\Release\net10.0-windows\Output\Output\Unpack\map_lobby_1.36.11.15210_1608332248\ShadowTrackerExtra\Content\BluePrints\Core\BP_PlayerPawn.uasset
+
+--- Collision-Related Properties ---
+  HitBox_Prone_GEN_VARIABLE.CapsuleHalfHeight = 150.0000
+  HitBox_Prone_GEN_VARIABLE.CapsuleRadius = 60.0000
+  HitBox_Stand_GEN_VARIABLE.CapsuleHalfHeight = 120.0000
+  HitBox_Stand_GEN_VARIABLE.CapsuleRadius = 100.0000
+  CollisionCylinder.CapsuleRadius = 40.0000
+  CrowdAgent_GEN_VARIABLE.AgentRadius = 40.0000
+  NavigationInvokerComponent.TileGenerationRadius = 50.0000
+  NavigationInvokerComponent.TileRemovalRadius = 50.0000
+
+--- All FloatPropertyData (sorted by value - looking for capsule ~88/34) ---
+    -1500.0000  ParachuteComponent.FreeFall_MaxForwardExtraFallSpeed
+     -600.0000  ParachuteComponent.LandingWalkZSpeed
+     -500.0000  ParachuteComponent.LandingRollZSpeed
+      -45.0000  NewFPPCamera_GEN_VARIABLE.UpperArmAreaCheckDetails[0].YawDirOffsetValue
+      -45.0000  NewFPPCamera_GEN_VARIABLE.UpperArmAreaCheckDetails[2].YawDirOffsetValue
+      -45.0000  NewFPPCamera_GEN_VARIABLE.UpperArmAreaCheckDetails[4].YawDirOffsetValue
+      -45.0000  NewFPPCamera_GEN_VARIABLE.UpperArmAreaCheckDetails[6].YawDirOffsetValue
+      -33.7500  NewFPPCamera_GEN_VARIABLE.UpperArmAreaCheckDetails[8].YawDirOffsetValue
+      -33.7500  NewFPPCamera_GEN_VARIABLE.UpperArmAreaCheckDetails[10].YawDirOffsetValue
+      -33.7500  NewFPPCamera_GEN_VARIABLE.UpperArmAreaCheckDetails[12].YawDirOffsetValue
+      -33.7500  NewFPPCamera_GEN_VARIABLE.UpperArmAreaCheckDetails[14].YawDirOffsetValue
+      -22.5000  NewFPPCamera_GEN_VARIABLE.UpperArmAreaCheckDetails[16].YawDirOffsetValue
+      -22.5000  NewFPPCamera_GEN_VARIABLE.UpperArmAreaCheckDetails[18].YawDirOffsetValue
+      -22.5000  NewFPPCamera_GEN_VARIABLE.UpperArmAreaCheckDetails[20].YawDirOffsetValue
+      -22.5000  NewFPPCamera_GEN_VARIABLE.UpperArmAreaCheckDetails[22].YawDirOffsetValue
+      -11.2500  NewFPPCamera_GEN_VARIABLE.UpperArmAreaCheckDetails[4].PitchDirOffsetValue
+      -11.2500  NewFPPCamera_GEN_VARIABLE.UpperArmAreaCheckDetails[5].PitchDirOffsetValue
+      -11.2500  NewFPPCamera_GEN_VARIABLE.UpperArmAreaCheckDetails[12].PitchDirOffsetValue
+      -11.2500  NewFPPCamera_GEN_VARIABLE.UpperArmAreaCheckDetails[13].PitchDirOffsetValue
+      -11.2500  NewFPPCamera_GEN_VARIABLE.UpperArmAreaCheckDetails[20].PitchDirOffsetValue
+      -11.2500  NewFPPCamera_GEN_VARIABLE.UpperArmAreaCheckDetails[21].PitchDirOffsetValue
+        0.0000  ParachuteComponent.FreeFall_MaxRightExtraFallSpeed
+        0.0000  ParachuteComponent.FreeFall_MaxPitchBackAngle
+        0.0000  ParachuteComponent.Opened_MaxBackwardSpeed
+        0.0000  ParachuteComponent.Opened_MaxBackExtraFallSpeed
+        0.0000  ParachuteComponent.Opened_MaxLeftRightExtraFallSpeed
+        0.0000  LagCompensationComponent.PoseCheckBoxesCfg[0].ReferenceVSlope
+        0.0000  LagCompensationComponent.PoseCheckBoxesCfg[1].ReferenceVSlope
+        0.0000  LagCompensationComponent.PoseCheckBoxesCfg[2].ReferenceVSlope
+        0.0000  LagCompensationComponent.PoseCheckBoxesCfg[3].ReferenceVSlope
+        0.0000  NewFPPCamera_GEN_VARIABLE.UpperArmAreaCheckDetails[0].PitchDirOffsetValue
+        0.0000  NewFPPCamera_GEN_VARIABLE.UpperArmAreaCheckDetails[1].PitchDirOffsetValue
+        0.0000  NewFPPCamera_GEN_VARIABLE.UpperArmAreaCheckDetails[8].PitchDirOffsetValue
+        0.0000  NewFPPCamera_GEN_VARIABLE.UpperArmAreaCheckDetails[9].PitchDirOffsetValue
+        0.0000  NewFPPCamera_GEN_VARIABLE.UpperArmAreaCheckDetails[16].PitchDirOffsetValue
+        0.0000  NewFPPCamera_GEN_VARIABLE.UpperArmAreaCheckDetails[17].PitchDirOffsetValue
+        0.0000  NewFPPCamera_GEN_VARIABLE.UpperArmAreaCheckDetails[24].YawDirOffsetValue
+        0.0000  NewFPPCamera_GEN_VARIABLE.UpperArmAreaCheckDetails[25].YawDirOffsetValue
+        0.0000  NewFPPCamera_GEN_VARIABLE.UpperArmAreaCheckDetails[26].YawDirOffsetValue
+        0.0000  NewFPPCamera_GEN_VARIABLE.UpperArmAreaCheckDetails[26].PitchDirOffsetValue
+        0.0000  NewFPPSpringArm_GEN_VARIABLE.TargetArmLength
+        0.0001  FPPSpringArm_GEN_VARIABLE.InVehicleCameraData.SpringArmLength
+        0.1000  PersistClientState.NetUpdateFrequency
+        0.3000  AimHoldComp_GEN_VARIABLE.HoldTimeThreshold
+        0.3000  PeekHoldComp_GEN_VARIABLE.HoldTimeThreshold
+        0.5500  ParachuteComponent.RollLandingPerformanceTime
+        0.5500  ParachuteComponent.WalkLandingPerformanceTime
+        0.6500  ParachuteComponent.Opened_GlidingSpeedRemainPercent
+        0.6670  LagCompensationComponent.PoseCheckBoxesCfg[0].ReferenceHSlope
+        0.6670  LagCompensationComponent.PoseCheckBoxesCfg[1].ReferenceHSlope
+        0.6670  LagCompensationComponent.PoseCheckBoxesCfg[2].ReferenceHSlope
+        0.6670  LagCompensationComponent.PoseCheckBoxesCfg[3].ReferenceHSlope
+        0.7500  LerpAlpha_Template.TimelineLength
+        1.0000  LagCompensationComponent.PoseCheckBoxesCfg[0].VMinScale
+        1.0000  LagCompensationComponent.PoseCheckBoxesCfg[0].VMaxScale
+        1.0000  LagCompensationComponent.PoseCheckBoxesCfg[1].VMinScale
+        1.0000  LagCompensationComponent.PoseCheckBoxesCfg[1].VMaxScale
+        1.0000  LagCompensationComponent.PoseCheckBoxesCfg[2].VMinScale
+        1.0000  LagCompensationComponent.PoseCheckBoxesCfg[2].VMaxScale
+        1.0000  LagCompensationComponent.PoseCheckBoxesCfg[3].VMinScale
+        1.0000  LagCompensationComponent.PoseCheckBoxesCfg[3].VMaxScale
+        1.3300  TurnLerpAlpha_Template.TimelineLength
+        1.5000  ParachuteCamBlend_Template.TimelineLength
+        1.5000  ParachuteWalkCamBlend_Template.TimelineLength
+        3.0000  LagCompensationComponent.PoseCheckBoxesCfg[0].HMinScale
+        3.0000  LagCompensationComponent.PoseCheckBoxesCfg[1].HMinScale
+        3.0000  LagCompensationComponent.PoseCheckBoxesCfg[2].HMinScale
+        3.0000  LagCompensationComponent.PoseCheckBoxesCfg[3].HMinScale
+        4.0000  ParachuteComponent.FreeFall_RotationYawInterpSpeed
+        5.0000  BP_SwimController_GEN_VARIABLE.UpdateMeshZOffsetWithTheWaves
+        5.0000  ParachuteComponent.FreeFall_RotationPitchInterpSpeed
+        5.0000  STExtraScopeSpring_GEN_VARIABLE.TargetArmLength
+        6.0000  ParachuteComponent.Opened_MaxPitchBackAngle
+        6.0000  CustomSpringArm_GEN_VARIABLE.SocketOffsetInterpSpeed
+        6.0000  CustomSpringArm_GEN_VARIABLE.TargetOffsetInterpSpeed
+        6.0000  CustomSpringArm_GEN_VARIABLE.ArmLengthInterpSpeed
+        8.0000  LagCompensationComponent.PoseCheckBoxesCfg[0].HMaxScale
+        8.0000  LagCompensationComponent.PoseCheckBoxesCfg[1].HMaxScale
+        8.0000  LagCompensationComponent.PoseCheckBoxesCfg[2].HMaxScale
+        8.0000  LagCompensationComponent.PoseCheckBoxesCfg[3].HMaxScale
+       11.2500  NewFPPCamera_GEN_VARIABLE.UpperArmAreaCheckDetails[2].PitchDirOffsetValue
+       11.2500  NewFPPCamera_GEN_VARIABLE.UpperArmAreaCheckDetails[3].PitchDirOffsetValue
+       11.2500  NewFPPCamera_GEN_VARIABLE.UpperArmAreaCheckDetails[10].PitchDirOffsetValue
+       11.2500  NewFPPCamera_GEN_VARIABLE.UpperArmAreaCheckDetails[11].PitchDirOffsetValue
+       11.2500  NewFPPCamera_GEN_VARIABLE.UpperArmAreaCheckDetails[18].PitchDirOffsetValue
+       11.2500  NewFPPCamera_GEN_VARIABLE.UpperArmAreaCheckDetails[19].PitchDirOffsetValue
+       15.0000  CustomSpringArm_GEN_VARIABLE.ProbeSize
+       15.0000  FPPSpringArm_GEN_VARIABLE.CurCameraData.SpringArmLength
+       15.0000  FPPSpringArm_GEN_VARIABLE.DefaultCameraData.SpringArmLength
+       15.0000  FPPSpringArm_GEN_VARIABLE.TargetArmLength
+       15.0000  NewFPPCamera_GEN_VARIABLE.UpperArmAreaCheckDetails[25].PitchDirOffsetValue
+       20.0000  STExtraScopeSpring_GEN_VARIABLE.CameraRotationLagSpeed
+       22.5000  NewFPPCamera_GEN_VARIABLE.UpperArmAreaCheckDetails[6].PitchDirOffsetValue
+       22.5000  NewFPPCamera_GEN_VARIABLE.UpperArmAreaCheckDetails[7].PitchDirOffsetValue
+       22.5000  NewFPPCamera_GEN_VARIABLE.UpperArmAreaCheckDetails[14].PitchDirOffsetValue
+       22.5000  NewFPPCamera_GEN_VARIABLE.UpperArmAreaCheckDetails[15].PitchDirOffsetValue
+       22.5000  NewFPPCamera_GEN_VARIABLE.UpperArmAreaCheckDetails[17].YawDirOffsetValue
+       22.5000  NewFPPCamera_GEN_VARIABLE.UpperArmAreaCheckDetails[19].YawDirOffsetValue
+       22.5000  NewFPPCamera_GEN_VARIABLE.UpperArmAreaCheckDetails[21].YawDirOffsetValue
+       22.5000  NewFPPCamera_GEN_VARIABLE.UpperArmAreaCheckDetails[22].PitchDirOffsetValue
+       22.5000  NewFPPCamera_GEN_VARIABLE.UpperArmAreaCheckDetails[23].YawDirOffsetValue
+       22.5000  NewFPPCamera_GEN_VARIABLE.UpperArmAreaCheckDetails[23].PitchDirOffsetValue
+       25.0000  FPPSpringArm_GEN_VARIABLE.ProbeSize
+       30.0000  ParachuteComponent.Opened_MaxRollAngle
+       30.0000  NewFPPCamera_GEN_VARIABLE.UpperArmAreaCheckDetails[24].PitchDirOffsetValue
+       30.0000  ShoulderCameraSpringArm_GEN_VARIABLE.TargetArmLength
+       33.7500  NewFPPCamera_GEN_VARIABLE.UpperArmAreaCheckDetails[9].YawDirOffsetValue
+       33.7500  NewFPPCamera_GEN_VARIABLE.UpperArmAreaCheckDetails[11].YawDirOffsetValue
+       33.7500  NewFPPCamera_GEN_VARIABLE.UpperArmAreaCheckDetails[13].YawDirOffsetValue
+       33.7500  NewFPPCamera_GEN_VARIABLE.UpperArmAreaCheckDetails[15].YawDirOffsetValue
+       36.0000  ParachuteComponent.Opened_MaxPitchForwardAngle
+       40.0000  CollisionCylinder.CapsuleRadius
+       40.0000  CrowdAgent_GEN_VARIABLE.AgentRadius
+       45.0000  NewFPPCamera_GEN_VARIABLE.UpperArmAreaCheckDetails[1].YawDirOffsetValue
+       45.0000  NewFPPCamera_GEN_VARIABLE.UpperArmAreaCheckDetails[3].YawDirOffsetValue
+       45.0000  NewFPPCamera_GEN_VARIABLE.UpperArmAreaCheckDetails[5].YawDirOffsetValue
+       45.0000  NewFPPCamera_GEN_VARIABLE.UpperArmAreaCheckDetails[7].YawDirOffsetValue
+       46.0000  ParachuteComponent.FreeFall_MinDiveAngle
+       50.0000  ParachuteComponent.ParachuteStuckDisThreshold
+       50.0000  NavigationInvokerComponent.TileGenerationRadius
+       50.0000  NavigationInvokerComponent.TileRemovalRadius
+       55.0000  ParachuteComponent.Opened_MaxRightSpeed
+       55.0000  ParachuteComponent.Opened_MaxYawAngleSpeed
+       60.0000  HitBox_Prone_GEN_VARIABLE.CapsuleRadius
+       60.0000  ScopingCamera_GEN_VARIABLE.FieldOfView
+       80.0000  Camera_GEN_VARIABLE.FieldOfView
+       89.0000  ParachuteComponent.FreeFall_MaxPitchForwardAngle
+      100.0000  HitBox_Stand_GEN_VARIABLE.CapsuleRadius
+      100.0000  CustomSpringArm_GEN_VARIABLE.CameraLagSpeed
+      120.0000  HitBox_Stand_GEN_VARIABLE.CapsuleHalfHeight
+      150.0000  HitBox_Prone_GEN_VARIABLE.CapsuleHalfHeight
+      150.0000  RescueOtherComponent.FanData.Angle
+      176.0000  CrowdAgent_GEN_VARIABLE.Height
+      200.0000  BP_SwimController_GEN_VARIABLE.UpdateMeshZWithTheWavesInterpolationSpeed
+      220.0000  CustomSpringArm_GEN_VARIABLE.CurCameraData.TargetArmLength
+      220.0000  CustomSpringArm_GEN_VARIABLE.DefaultCameraData.TargetArmLength
+      220.0000  CustomSpringArm_GEN_VARIABLE.TargetArmLength
+      300.0000  ParachuteComponent.Opened_AcceForward
+      555.0000  ParachuteComponent.Opened_MaxFreeFallSpeed
+      600.0000  ParachuteComponent.Opened_AcceFall
+      660.0000  ParachuteComponent.LandingRollBaseSpeed
+     1000.0000  ParachuteComponent.FreeFall_AcceRight
+     1222.0000  ParachuteComponent.Opened_MaxForwardExtraFallSpeed
+     1500.0000  ParachuteComponent.FreeFall_MaxDiveExtraFallSpeed
+     2000.0000  ParachuteComponent.Opened_MaxForwardSpeed
+     2800.0000  ParachuteComponent.ManualParachuteHeight
+     3000.0000  ParachuteComponent.FreeFall_AcceFall
+     3500.0000  ParachuteComponent.FreeFall_MaxRightSpeed
+     4000.0000  ParachuteComponent.FreeFall_MaxForwardSpeed
+
+========================================
+ENEMY/CHARACTER COLLISION (mesh/blueprint files)
+========================================
+
+--- BP_CharacterDeadInventoryBoxFieldOfViewNotificationComponent ---
+
+--- BP_CharacterFieldOfViewNotificationComponent ---
+
+--- BP_CharacterMovementMethods ---
+
+--- BP_MonsterGenricDamageType ---
+
+--- BP_ZombieDamageType ---
+

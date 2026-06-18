@@ -1,0 +1,297 @@
+﻿<Window x:Class="PakToolGUI.AssetEditorWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="UE Asset Property Editor" Height="700" Width="960"
+        WindowStartupLocation="CenterOwner" ResizeMode="CanResizeWithGrip"
+        MinHeight="500" MinWidth="750"
+        Background="#1a1b26">
+
+    <Window.Resources>
+        <SolidColorBrush x:Key="BgPrimary" Color="#1a1b26"/>
+        <SolidColorBrush x:Key="BgSecondary" Color="#24283b"/>
+        <SolidColorBrush x:Key="BgTertiary" Color="#2f3348"/>
+        <SolidColorBrush x:Key="TextPrimary" Color="#c0caf5"/>
+        <SolidColorBrush x:Key="TextSecondary" Color="#a9b1d6"/>
+        <SolidColorBrush x:Key="TextMuted" Color="#565f89"/>
+        <SolidColorBrush x:Key="Accent" Color="#7aa2f7"/>
+        <SolidColorBrush x:Key="Success" Color="#9ece6a"/>
+        <SolidColorBrush x:Key="Warning" Color="#e0af68"/>
+        <SolidColorBrush x:Key="Error" Color="#f7768e"/>
+        <SolidColorBrush x:Key="BorderColor" Color="#3b4261"/>
+
+        <Style x:Key="FieldLabel" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#a9b1d6"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+
+        <Style x:Key="HexInput" TargetType="TextBox">
+            <Setter Property="Foreground" Value="#c0caf5"/>
+            <Setter Property="Background" Value="#2f3348"/>
+            <Setter Property="BorderBrush" Value="#3b4261"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="8,5"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="FontFamily" Value="Consolas"/>
+            <Setter Property="CaretBrush" Value="#c0caf5"/>
+        </Style>
+
+        <Style x:Key="SmallBtn" TargetType="Button">
+            <Setter Property="Background" Value="#2f3348"/>
+            <Setter Property="Foreground" Value="#c0caf5"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="BorderBrush" Value="#3b4261"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="12,5"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="5" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#363b54"/>
+                    <Setter Property="BorderBrush" Value="#7aa2f7"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="PrimaryBtn" TargetType="Button" BasedOn="{StaticResource SmallBtn}">
+            <Setter Property="Background" Value="#3d59a1"/>
+            <Setter Property="Foreground" Value="#ffffff"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+        </Style>
+
+        <Style x:Key="SuccessBtn" TargetType="Button" BasedOn="{StaticResource SmallBtn}">
+            <Setter Property="Background" Value="#2d5a3d"/>
+            <Setter Property="Foreground" Value="#9ece6a"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+        </Style>
+
+        <Style x:Key="ActiveToggleBtn" TargetType="Button" BasedOn="{StaticResource SmallBtn}">
+            <Setter Property="Background" Value="#2f3348"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsChecked, RelativeSource={RelativeSource Self}}" Value="True">
+                    <Setter Property="Background" Value="#3d59a1"/>
+                    <Setter Property="Foreground" Value="#ffffff"/>
+                    <Setter Property="BorderBrush" Value="#7aa2f7"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Title Bar -->
+        <Border Grid.Row="0" Background="#24283b" Padding="16,12"
+                BorderBrush="#3b4261" BorderThickness="0,0,0,1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0" Orientation="Horizontal">
+                    <TextBlock Text="&#x1F50D;" FontSize="20" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <StackPanel>
+                        <TextBlock x:Name="TxtTitle" Text="Asset Property Editor" FontSize="16" FontWeight="Bold"
+                                   Foreground="#c0caf5"/>
+                        <TextBlock x:Name="TxtFilePath" Text="" FontSize="10"
+                                   Foreground="#565f89" TextTrimming="CharacterEllipsis" MaxWidth="500"/>
+                    </StackPanel>
+                </StackPanel>
+                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                    <Button x:Name="BtnRecoilEditor" Content="&#x1F3AF; Recoil Editor"
+                            Style="{StaticResource SmallBtn}" Width="120" Margin="0,0,8,0"
+                            Click="BtnRecoilEditor_Click"
+                            ToolTip="Open standalone Recoil Curve Editor"/>
+                    <Button x:Name="BtnOpen" Content="&#x1F4C2; Open"
+                            Style="{StaticResource SmallBtn}" Width="80" Margin="0,0,8,0"
+                            Click="BtnOpen_Click"/>
+                    <Button x:Name="BtnRefresh" Content="&#x21BB; Refresh"
+                            Style="{StaticResource SmallBtn}" Width="80" Margin="0,0,8,0"
+                            Click="BtnRefresh_Click"/>
+                    <Button x:Name="BtnSave" Content="&#x1F4BE; Save"
+                            Style="{StaticResource SuccessBtn}" Width="80"
+                            IsEnabled="False" Click="BtnSave_Click"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Filter Bar -->
+        <Border Grid.Row="1" Background="#1a1b26" Padding="16,8">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0" Text="Filter:" Style="{StaticResource FieldLabel}" Margin="0,0,8,0"/>
+                <TextBox x:Name="TxtFilter" Grid.Column="1" Style="{StaticResource HexInput}"
+                         MaxLength="40" KeyUp="TxtFilter_KeyUp"
+                         ToolTip="Type property/export name and press Enter"/>
+
+                <StackPanel Grid.Column="2" Orientation="Horizontal" Margin="12,0,0,0">
+                    <Button x:Name="BtnCollisionScan" Content="&#x1F9AC; Collision Scan"
+                            Style="{StaticResource SmallBtn}" Width="120" Margin="0,0,6,0"
+                            Click="BtnCollisionScan_Click"
+                            ToolTip="Deep scan for collision/capsule/hitbox properties"/>
+                    <Button x:Name="BtnShowAll" Content="&#x1F4CB; Show All"
+                            Style="{StaticResource SmallBtn}" Width="80" Margin="0,0,6,0"
+                            Click="BtnShowAll_Click"/>
+                    <Button x:Name="BtnResetAll" Content="&#x21BA; Reset"
+                            Style="{StaticResource SmallBtn}" Width="70"
+                            Click="BtnResetAll_Click"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="4" Orientation="Horizontal" Margin="12,0,0,0">
+                    <TextBlock Text="Range:" Style="{StaticResource FieldLabel}" Margin="0,0,4,0"/>
+                    <TextBox x:Name="TxtMinVal" Style="{StaticResource HexInput}" Width="60"
+                             Text="" ToolTip="Min value"/>
+                    <TextBlock Text="-" Style="{StaticResource FieldLabel}" Margin="4,0"/>
+                    <TextBox x:Name="TxtMaxVal" Style="{StaticResource HexInput}" Width="60"
+                             Text="" ToolTip="Max value"/>
+                    <Button Content="Go" Style="{StaticResource SmallBtn}" Width="40" Margin="4,0,0,0"
+                            Click="BtnRangeFilter_Click"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Quick Filters -->
+        <Border Grid.Row="2" Background="#1a1b26" Padding="16,0,16,8">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Quick:" Style="{StaticResource FieldLabel}" Margin="0,0,8,0"/>
+                <Button Content="capsule" Tag="capsule" Style="{StaticResource SmallBtn}"
+                        Width="68" Margin="0,0,4,0" Click="QuickFilter_Click"/>
+                <Button Content="collision" Tag="collision" Style="{StaticResource SmallBtn}"
+                        Width="68" Margin="0,0,4,0" Click="QuickFilter_Click"/>
+                <Button Content="hitbox" Tag="hitbox" Style="{StaticResource SmallBtn}"
+                        Width="68" Margin="0,0,4,0" Click="QuickFilter_Click"/>
+                <Button Content="radius" Tag="radius" Style="{StaticResource SmallBtn}"
+                        Width="68" Margin="0,0,4,0" Click="QuickFilter_Click"/>
+                <Button Content="camera" Tag="camera" Style="{StaticResource SmallBtn}"
+                        Width="68" Margin="0,0,4,0" Click="QuickFilter_Click"/>
+                <Button Content="speed" Tag="speed" Style="{StaticResource SmallBtn}"
+                        Width="68" Margin="0,0,4,0" Click="QuickFilter_Click"/>
+                <Button Content="parachute" Tag="parachute" Style="{StaticResource SmallBtn}"
+                        Width="78" Click="QuickFilter_Click"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Property Grid -->
+        <DataGrid x:Name="PropertyGrid" Grid.Row="3"
+                  Background="Transparent"
+                  RowBackground="Transparent"
+                  AlternatingRowBackground="#1e2030"
+                  AutoGenerateColumns="False"
+                  CanUserAddRows="False"
+                  CanUserDeleteRows="False"
+                  CanUserResizeColumns="True"
+                  CanUserSortColumns="True"
+                  HeadersVisibility="Column"
+                  GridLinesVisibility="Horizontal"
+                  HorizontalGridLinesBrush="#2f3348"
+                  SelectionMode="Single"
+                  SelectionUnit="FullRow"
+                  FontSize="11" FontFamily="Consolas"
+                  RowHeight="26"
+                  LoadingRow="PropertyGrid_LoadingRow"
+                  CellEditEnding="PropertyGrid_CellEditEnding">
+
+            <DataGrid.Resources>
+                <Style TargetType="DataGridColumnHeader">
+                    <Setter Property="Background" Value="#24283b"/>
+                    <Setter Property="Foreground" Value="#7aa2f7"/>
+                    <Setter Property="FontWeight" Value="Bold"/>
+                    <Setter Property="FontSize" Value="10"/>
+                    <Setter Property="BorderBrush" Value="#3b4261"/>
+                    <Setter Property="BorderThickness" Value="0,0,0,1"/>
+                    <Setter Property="Padding" Value="8,5"/>
+                </Style>
+                <Style TargetType="DataGridCell">
+                    <Setter Property="BorderThickness" Value="0"/>
+                    <Setter Property="Padding" Value="8,3"/>
+                    <Setter Property="Foreground" Value="#c0caf5"/>
+                    <Setter Property="Background" Value="Transparent"/>
+                </Style>
+            </DataGrid.Resources>
+
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Export" Binding="{Binding ExportName}" Width="150" IsReadOnly="True">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Foreground" Value="#565f89"/>
+                            <Setter Property="FontSize" Value="10"/>
+                            <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Path/Property" Binding="{Binding PropertyName}" Width="260" IsReadOnly="True">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Foreground" Value="#7aa2f7"/>
+                            <Setter Property="FontWeight" Value="SemiBold"/>
+                            <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Current" Binding="{Binding ValueDisplay}" Width="90" IsReadOnly="True"/>
+                <DataGridTemplateColumn Header="New Value" Width="120">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBox Text="{Binding NewValue, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:F4}}"
+                                     Background="#2f3348" Foreground="#e0af68"
+                                     BorderBrush="#3b4261" BorderThickness="1"
+                                     Padding="6,2" FontFamily="Consolas" FontSize="11"
+                                     CaretBrush="#c0caf5"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn Header="UexpOffset" Binding="{Binding UexpOffset, StringFormat=0x{0:X6}}" Width="80" IsReadOnly="True">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Foreground" Value="#565f89"/>
+                            <Setter Property="FontSize" Value="10"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <!-- Status Bar -->
+        <Border Grid.Row="4" Background="#24283b" Padding="14,5"
+                BorderBrush="#3b4261" BorderThickness="0,1,0,0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0" Orientation="Horizontal">
+                    <TextBlock x:Name="TxtStatus" Text="Ready" FontSize="11" Foreground="#9ece6a"/>
+                    <TextBlock x:Name="TxtCount" Text="" FontSize="11" Foreground="#565f89" Margin="16,0,0,0"/>
+                </StackPanel>
+                <Button Grid.Column="1" x:Name="BtnApply" Content="&#x2714; Apply All Changes"
+                        Style="{StaticResource PrimaryBtn}" Width="150"
+                        IsEnabled="False" Click="BtnApply_Click"/>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

@@ -1,0 +1,23 @@
+# Visual Studio / .NET generated files
+.vs/
+bin/
+obj/
+publish/
+artifacts/
+
+# User-local settings
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Build logs and temporary outputs
+*.log
+*.tmp
+*.cache
+
+# Native scratch build artifacts
+*.obj
+*.pdb
+*.ilk
+Tools/ZucReference/**/zuctest.exe

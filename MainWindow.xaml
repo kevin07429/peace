@@ -1,0 +1,528 @@
+<Window x:Class="PakToolGUI.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="PAK Tool v3.0" Height="800" Width="1080"
+        WindowStartupLocation="CenterScreen" ResizeMode="CanResizeWithGrip"
+        MinHeight="700" MinWidth="920"
+        Background="{StaticResource BgPrimary}"
+        AllowDrop="True" DragEnter="Window_DragEnter" Drop="Window_Drop">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" Background="{StaticResource BgSecondary}" Padding="22,14"
+                BorderBrush="{StaticResource BorderColor}" BorderThickness="0,0,0,1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0">
+                    <TextBlock Text="PAK Tool v3.0" FontSize="22" FontWeight="SemiBold"
+                               Foreground="{StaticResource TextPrimary}"/>
+                    <TextBlock Text="Auto-locate game_patch, learn glow, relocate blueprint recipes, patch in place"
+                               FontSize="12" Foreground="{StaticResource TextMuted}" Margin="0,3,0,0"/>
+                </StackPanel>
+                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Button x:Name="BtnAssetEditor" Content="Asset Editor"
+                            Style="{StaticResource SecondaryButton}" MinWidth="104" Margin="0,0,8,0"
+                            Click="BtnAssetEditor_Click"/>
+                    <Button x:Name="BtnRecoilEditor" Content="Recoil Editor"
+                            Style="{StaticResource SecondaryButton}" MinWidth="110" Margin="0,0,8,0"
+                            Click="BtnRecoilEditor_Click"/>
+                    <Button x:Name="BtnLaunchEditor" Content="UAssetGUI"
+                            Style="{StaticResource SecondaryButton}" MinWidth="92"
+                            Click="BtnLaunchEditor_Click"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <Grid Margin="22,18">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0" Margin="0,0,0,12">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1.15*"/>
+                        <ColumnDefinition Width="0.85*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Border Grid.Column="0" x:Name="DropZone" Background="{StaticResource BgSecondary}"
+                            BorderBrush="{StaticResource Accent}" BorderThickness="1.5" CornerRadius="8"
+                            Padding="24,18" Margin="0,0,10,0">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0" Text="Drop or browse target PAK files"
+                                       FontSize="16" FontWeight="SemiBold"
+                                       Foreground="{StaticResource TextPrimary}" HorizontalAlignment="Center"/>
+                            <TextBlock Grid.Row="1" Text="Glow uses the newest large game_patch automatically; selected files are used by custom patches."
+                                       FontSize="11" Foreground="{StaticResource TextMuted}" TextWrapping="Wrap"
+                                       HorizontalAlignment="Center" Margin="0,5,0,0"/>
+                        </Grid>
+                    </Border>
+
+                    <Border Grid.Column="1" Background="{StaticResource BgSecondary}" CornerRadius="8"
+                            BorderBrush="{StaticResource BorderColor}" BorderThickness="1" Padding="14,12">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0" Text="Output and source control"
+                                       FontSize="13" FontWeight="SemiBold" Foreground="{StaticResource TextPrimary}"/>
+                            <Grid Grid.Row="1" Margin="0,10,0,8">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox Grid.Column="0" x:Name="TxtOutputDir" Text="Output"
+                                         Style="{StaticResource HexInput}" FontSize="11"
+                                         ToolTip="Default unpack output folder"/>
+                                <Button Grid.Column="1" x:Name="BtnBrowseOutput" Content="..."
+                                        Style="{StaticResource SmallBtn}" Width="46" Margin="8,0,0,0"
+                                        Click="BtnBrowseOutput_Click"/>
+                            </Grid>
+                            <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
+                                <Button x:Name="BtnBrowse" Content="Browse PAK"
+                                        Style="{StaticResource SecondaryButton}" MinWidth="112"
+                                        Click="BtnBrowse_Click"/>
+                                <Button x:Name="BtnClear" Content="Clear"
+                                        Style="{StaticResource SecondaryButton}" MinWidth="74" Margin="8,0,0,0"
+                                        Click="BtnClear_Click"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                </Grid>
+
+                <Border Grid.Row="1" x:Name="FileListScroll" Background="{StaticResource BgSecondary}"
+                        CornerRadius="8" Padding="4" Margin="0,0,0,12" Visibility="Collapsed">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Border Grid.Row="0" Padding="12,7">
+                            <TextBlock x:Name="TxtFileCount" FontSize="12" FontWeight="SemiBold"
+                                       Foreground="{StaticResource TextSecondary}"/>
+                        </Border>
+                        <ListBox Grid.Row="1" x:Name="FileListBox" Background="{StaticResource BgTertiary}"
+                                 BorderThickness="0" Foreground="{StaticResource TextSecondary}"
+                                 FontSize="11" FontFamily="Consolas" MaxHeight="130"
+                                 HorizontalContentAlignment="Stretch">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Margin="0,1">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" Text="{Binding Name}"/>
+                                        <TextBlock Grid.Column="1" Text="{Binding SizeText}"
+                                                   Foreground="{StaticResource TextMuted}" Margin="16,0,0,0"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </Grid>
+                </Border>
+
+                <Expander Grid.Row="2" x:Name="ExpanderPresets" Header="Glow and learned patches"
+                          IsExpanded="True" Margin="0,0,0,12">
+                    <Border Background="{StaticResource BgSecondary}" CornerRadius="8" Padding="16"
+                            BorderBrush="{StaticResource BorderColor}" BorderThickness="1">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <Grid Grid.Row="0" Margin="0,0,0,14">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0">
+                                    <TextBlock Text="Glow automation" FontSize="15" FontWeight="SemiBold"
+                                               Foreground="{StaticResource Success}"/>
+                                    <TextBlock x:Name="TxtPresetStatus"
+                                               Text="Basic game_patch glow is separate from Skin / Character material glow. Use the green button for the base player outline glow."
+                                               FontSize="11" Foreground="{StaticResource TextMuted}"
+                                               TextWrapping="Wrap" Margin="0,4,0,0"/>
+                                </StackPanel>
+                                <TextBlock Grid.Column="1" Text="Auto locate + in-place patch"
+                                           FontSize="11" Foreground="{StaticResource Accent}"
+                                           VerticalAlignment="Center"/>
+                            </Grid>
+
+                            <Grid Grid.Row="1">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1.2*"/>
+                                    <ColumnDefinition Width="0.8*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Border Grid.Column="0" Background="{StaticResource BgTertiary}" CornerRadius="7"
+                                        BorderBrush="{StaticResource BorderColor}" BorderThickness="1"
+                                        Padding="14" Margin="0,0,10,0">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+                                        <Grid Grid.Row="0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <StackPanel Grid.Column="0">
+                                                <TextBlock Text="Basic game_patch player glow"
+                                                           FontSize="13" FontWeight="SemiBold"
+                                                           Foreground="{StaticResource TextPrimary}"/>
+                                                <TextBlock Text="Auto-finds the newest original game_patch, then applies the learned BP_PlayerPawn glow recipe."
+                                                           FontSize="10.5" Foreground="{StaticResource TextMuted}"
+                                                           TextWrapping="Wrap" Margin="0,3,0,0"/>
+                                            </StackPanel>
+                                            <Button Grid.Column="1" x:Name="BtnPresetGlow" Content="Basic game_patch Glow"
+                                                    Style="{StaticResource PrimaryButton}" MinWidth="164"
+                                                    Click="BtnPresetGlow_Click"/>
+                                        </Grid>
+
+                                        <Grid Grid.Row="1" Margin="0,14,0,0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="100"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="74"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Grid.Column="0" Text="Color" Style="{StaticResource FieldLabel}"
+                                                       Margin="0,0,8,0"/>
+                                            <TextBox Grid.Column="1" x:Name="TxtGlowColor" Text="#00FF66"
+                                                     Style="{StaticResource HexInput}" ToolTip="#RRGGBB"/>
+                                            <TextBlock Grid.Column="2" Text="Power" Style="{StaticResource FieldLabel}"
+                                                       Margin="14,0,8,0"/>
+                                            <TextBox Grid.Column="3" x:Name="TxtGlowIntensity" Text="2"
+                                                     Style="{StaticResource HexInput}"
+                                                     ToolTip="Default material glow power is x2. Commander Key uses x5 automatically."/>
+                                            <Button Grid.Column="4" x:Name="BtnLearnGlowBinary" Content="Learn Glow"
+                                                    Style="{StaticResource SecondaryButton}" MinWidth="112"
+                                                    HorizontalAlignment="Right" Click="BtnLearnGlowBinary_Click"/>
+                                        </Grid>
+
+                                        <Grid Grid.Row="2" Margin="0,12,0,0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Grid.Column="0"
+                                                       x:Name="TxtCommanderKeyGlowStatus"
+                                                       Text="Commander Key needs a verified learned key-glow recipe. Skin / Character only patches skin/material PAKs from the CSV."
+                                                       FontSize="10.5" Foreground="{StaticResource TextMuted}"
+                                                       TextWrapping="Wrap" VerticalAlignment="Center"/>
+                                            <Button Grid.Column="1" x:Name="BtnLearnCommanderKeyGlow"
+                                                    Content="Learn Key Glow"
+                                                    Style="{StaticResource SecondaryButton}" MinWidth="126"
+                                                    Margin="10,0,0,0" Click="BtnLearnCommanderKeyGlow_Click"/>
+                                            <Button Grid.Column="2" x:Name="BtnCommanderKeyGlow"
+                                                    Content="Commander Key"
+                                                    Style="{StaticResource SecondaryButton}" MinWidth="126"
+                                                    Margin="8,0,0,0" Click="BtnCommanderKeyGlow_Click"/>
+                                            <Button Grid.Column="3" x:Name="BtnSkinMaterialGlow"
+                                                    Content="Skin / Character"
+                                                    Style="{StaticResource SecondaryButton}" MinWidth="132"
+                                                    Margin="8,0,0,0" Click="BtnSkinMaterialGlow_Click"/>
+                                        </Grid>
+                                    </Grid>
+                                </Border>
+
+                                <Border Grid.Column="1" Background="{StaticResource BgTertiary}" CornerRadius="7"
+                                        BorderBrush="{StaticResource BorderColor}" BorderThickness="1"
+                                        Padding="14">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+                                        <TextBlock Grid.Row="0" Text="Range and recoil"
+                                                   FontSize="13" FontWeight="SemiBold"
+                                                   Foreground="{StaticResource TextPrimary}"/>
+                                        <TextBlock Grid.Row="1" Text="Exact map_lobby patches: Range x2, Recoil 0.125, and their combined output use learned recipes."
+                                                   FontSize="10.5" Foreground="{StaticResource TextMuted}"
+                                                   TextWrapping="Wrap" Margin="0,3,0,12"/>
+
+                                        <Grid Grid.Row="2">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="78"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Grid.Row="0" Grid.Column="0" Text="Range"
+                                                       Style="{StaticResource FieldLabel}" Margin="0,0,8,8"/>
+                                            <TextBox Grid.Row="0" Grid.Column="1" x:Name="TxtRangeMultiplier"
+                                                     Text="2" Style="{StaticResource HexInput}" Margin="0,0,8,8"/>
+                                            <Button Grid.Row="0" Grid.Column="2" x:Name="BtnPresetRange"
+                                                    Content="Apply Range x2" Style="{StaticResource SecondaryButton}"
+                                                    MinWidth="118" Margin="0,0,0,8"
+                                                    Click="BtnPresetRange_Click"/>
+
+                                            <TextBlock Grid.Row="1" Grid.Column="0" Text="Recoil"
+                                                       Style="{StaticResource FieldLabel}" Margin="0,0,8,8"/>
+                                            <TextBox Grid.Row="1" Grid.Column="1" x:Name="TxtRecoilScale"
+                                                     Text="0.125" Style="{StaticResource HexInput}" Margin="0,0,8,8"/>
+                                            <Button Grid.Row="1" Grid.Column="2" x:Name="BtnPresetRecoil"
+                                                    Content="Apply Recoil 0.125" Style="{StaticResource SecondaryButton}"
+                                                    MinWidth="118" Margin="0,0,0,8"
+                                                    Click="BtnPresetRecoil_Click"/>
+
+                                            <Button Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3"
+                                                    x:Name="BtnPresetCombined" Content="Apply Range + Recoil"
+                                                    Style="{StaticResource PrimaryButton}"
+                                                    HorizontalAlignment="Stretch"
+                                                    Click="BtnPresetCombined_Click"/>
+                                        </Grid>
+
+                                        <TextBlock Grid.Row="3"
+                                                   Text="Pack Output overrides the generated output path."
+                                                   FontSize="10.5" Foreground="{StaticResource TextMuted}"
+                                                   TextWrapping="Wrap" Margin="0,12,0,0"/>
+                                    </Grid>
+                                </Border>
+                            </Grid>
+
+                            <Border Grid.Row="2" Background="#1a2332" CornerRadius="7"
+                                    BorderBrush="{StaticResource BorderColor}" BorderThickness="1"
+                                    Padding="12" Margin="0,14,0,0">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,0,0,8">
+                                        <TextBlock Text="Custom JSON recipe tools" FontSize="12" FontWeight="SemiBold"
+                                                   Foreground="{StaticResource TextPrimary}"/>
+                                        <TextBlock Text="Learn from original + modified PAK, relocate offsets for game updates, then apply to the selected PAK."
+                                                   FontSize="10.5" Foreground="{StaticResource TextMuted}"
+                                                   TextWrapping="Wrap" Margin="0,2,0,0"/>
+                                    </StackPanel>
+                                    <TextBox Grid.Row="1" Grid.Column="0" x:Name="TxtRecipePath"
+                                             Style="{StaticResource HexInput}" FontSize="11"
+                                             ToolTip="Path to custom JSON recipe"/>
+                                    <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" Margin="8,0,0,0">
+                                        <Button x:Name="BtnRecipeBrowse" Content="Browse"
+                                                Style="{StaticResource SecondaryButton}" Width="78"
+                                                Margin="0,0,6,0" Click="BtnRecipeBrowse_Click"/>
+                                        <Button x:Name="BtnRecipeExample" Content="Example"
+                                                Style="{StaticResource SecondaryButton}" Width="78"
+                                                Margin="0,0,6,0" Click="BtnRecipeExample_Click"/>
+                                        <Button x:Name="BtnRecipeLearn" Content="Learn"
+                                                Style="{StaticResource SecondaryButton}" Width="72"
+                                                Margin="0,0,6,0" Click="BtnRecipeLearn_Click"/>
+                                        <Button x:Name="BtnRecipeRelocate" Content="Relocate"
+                                                Style="{StaticResource SecondaryButton}" Width="84"
+                                                Margin="0,0,6,0" Click="BtnRecipeRelocate_Click"/>
+                                        <Button x:Name="BtnRecipeApply" Content="Apply Recipe"
+                                                Style="{StaticResource PrimaryButton}" Width="116"
+                                                Click="BtnRecipeApply_Click"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+                        </Grid>
+                    </Border>
+                </Expander>
+
+                <Grid Grid.Row="3" Margin="0,0,0,12">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Expander Grid.Column="0" x:Name="ExpanderPack" Header="Pack preserving original PAK layout"
+                              IsExpanded="False" Margin="0,0,8,0">
+                        <Border Background="{StaticResource BgSecondary}" CornerRadius="8" Padding="16"
+                                BorderBrush="{StaticResource BorderColor}" BorderThickness="1">
+                            <StackPanel>
+                                <Border Background="#1a2332" CornerRadius="6" Padding="12,9" Margin="0,0,0,12">
+                                    <TextBlock x:Name="TxtPackDetected"
+                                               Text="Load a PAK first to auto-detect compression and encryption."
+                                               FontSize="11" Foreground="{StaticResource Warning}"
+                                               TextWrapping="Wrap"/>
+                                </Border>
+                                <Grid Margin="0,0,0,10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="72"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="Source" Style="{StaticResource FieldLabel}"/>
+                                    <TextBox Grid.Column="1" x:Name="TxtPackSource"
+                                             Style="{StaticResource HexInput}" FontSize="11"
+                                             TextChanged="TxtPackSource_TextChanged"/>
+                                    <Button Grid.Column="2" x:Name="BtnPackBrowse" Content="..."
+                                            Style="{StaticResource SmallBtn}" Width="44" Margin="8,0,0,0"
+                                            Click="BtnPackBrowse_Click"/>
+                                </Grid>
+                                <Grid Margin="0,0,0,10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="72"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="Output" Style="{StaticResource FieldLabel}"/>
+                                    <TextBox Grid.Column="1" x:Name="TxtPackOutput"
+                                             Style="{StaticResource HexInput}" FontSize="11"/>
+                                    <Button Grid.Column="2" x:Name="BtnPackOutputBrowse" Content="..."
+                                            Style="{StaticResource SmallBtn}" Width="44" Margin="8,0,0,0"
+                                            Click="BtnPackOutputBrowse_Click"/>
+                                </Grid>
+                                <TextBox x:Name="TxtMountPoint" Text="../../../" Visibility="Collapsed"/>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,4,0,0">
+                                    <TextBlock x:Name="TxtPackStatus" FontSize="11"
+                                               Foreground="{StaticResource TextMuted}"
+                                               VerticalAlignment="Center" Margin="0,0,12,0"/>
+                                    <Button x:Name="BtnPack" Content="Pack"
+                                            Style="{StaticResource PrimaryButton}" Width="110"
+                                            IsEnabled="False" Click="BtnPack_Click"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                    </Expander>
+
+                    <Expander Grid.Column="1" x:Name="ExpanderKeys" Header="Keys and native libraries"
+                              IsExpanded="False" Margin="8,0,0,0" Expanded="ExpanderKeys_Expanded">
+                        <Border Background="{StaticResource BgSecondary}" CornerRadius="8" Padding="16"
+                                BorderBrush="{StaticResource BorderColor}" BorderThickness="1">
+                            <StackPanel>
+                                <Grid Margin="0,0,0,10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="72"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="AES" Style="{StaticResource FieldLabel}"/>
+                                    <TextBox Grid.Column="1" x:Name="TxtAesKey" Style="{StaticResource HexInput}"
+                                             Text="01010101010101010101010101010101" MaxLength="64"/>
+                                    <Button Grid.Column="2" x:Name="BtnDetectKey" Content="Detect"
+                                            Style="{StaticResource SmallBtn}" Width="68" Margin="8,0,0,0"
+                                            Click="BtnDetectKey_Click"/>
+                                </Grid>
+                                <Grid Margin="0,0,0,12">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="72"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="Oodle" Style="{StaticResource FieldLabel}"/>
+                                    <TextBox Grid.Column="1" x:Name="TxtOodlePath"
+                                             Style="{StaticResource HexInput}" FontSize="11"/>
+                                    <Button Grid.Column="2" x:Name="BtnBrowseOodle" Content="..."
+                                            Style="{StaticResource SmallBtn}" Width="44" Margin="8,0,0,0"
+                                            Click="BtnBrowseOodle_Click"/>
+                                </Grid>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                    <Button x:Name="BtnSaveConfig" Content="Save"
+                                            Style="{StaticResource SecondaryButton}" Width="78"
+                                            Margin="0,0,8,0" Click="BtnSaveConfig_Click"/>
+                                    <Button x:Name="BtnLoadConfig" Content="Load"
+                                            Style="{StaticResource SecondaryButton}" Width="78"
+                                            Margin="0,0,8,0" Click="BtnLoadConfig_Click"/>
+                                    <Button x:Name="BtnResetKeys" Content="Reset"
+                                            Style="{StaticResource SecondaryButton}" Width="78"
+                                            Click="BtnResetKeys_Click"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                    </Expander>
+                </Grid>
+
+                <Border Grid.Row="4" Background="{StaticResource BgSecondary}" CornerRadius="8"
+                        Padding="4" Margin="0,0,0,12">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Border Grid.Row="0" Padding="12,7">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Log" FontSize="12" FontWeight="SemiBold"
+                                           Foreground="{StaticResource TextSecondary}"/>
+                                <TextBlock x:Name="TxtLogCount" FontSize="11"
+                                           Foreground="{StaticResource TextMuted}" Margin="8,0,0,0"/>
+                            </StackPanel>
+                        </Border>
+                        <RichTextBox Grid.Row="1" x:Name="TxtLog" IsReadOnly="True"
+                                     Background="{StaticResource BgTertiary}" BorderThickness="0"
+                                     Foreground="{StaticResource TextSecondary}"
+                                     FontFamily="Consolas" FontSize="11" Padding="12,8"
+                                     VerticalScrollBarVisibility="Auto" MinHeight="120">
+                            <RichTextBox.Resources>
+                                <Style TargetType="{x:Type Paragraph}">
+                                    <Setter Property="Margin" Value="0"/>
+                                    <Setter Property="LineHeight" Value="18"/>
+                                </Style>
+                            </RichTextBox.Resources>
+                        </RichTextBox>
+                    </Grid>
+                </Border>
+
+                <Grid Grid.Row="5" Margin="0,0,0,4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0" VerticalAlignment="Center" Margin="0,0,14,0">
+                        <ProgressBar x:Name="ProgressBar" Minimum="0" Maximum="100" Value="0" Height="8"/>
+                        <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
+                            <TextBlock x:Name="TxtProgress" Text="Ready" FontSize="11"
+                                       Foreground="{StaticResource TextMuted}"/>
+                            <TextBlock x:Name="TxtProgressPercent" FontSize="11"
+                                       Foreground="{StaticResource Accent}" Margin="10,0,0,0"/>
+                        </StackPanel>
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                        <Button x:Name="BtnOpenOutput" Content="Open Output"
+                                Style="{StaticResource SecondaryButton}" MinWidth="104"
+                                Margin="0,0,8,0" Click="BtnOpenOutput_Click"/>
+                        <Button x:Name="BtnUnpack" Content="Unpack"
+                                Style="{StaticResource PrimaryButton}" MinWidth="110"
+                                IsEnabled="False" Click="BtnUnpack_Click"/>
+                    </StackPanel>
+                </Grid>
+            </Grid>
+        </ScrollViewer>
+
+        <Border Grid.Row="2" Background="{StaticResource BgSecondary}" Padding="14,6"
+                BorderBrush="{StaticResource BorderColor}" BorderThickness="0,1,0,0">
+            <TextBlock x:Name="TxtStatus" Text="Ready" FontSize="11" Foreground="{StaticResource Success}"/>
+        </Border>
+    </Grid>
+</Window>
