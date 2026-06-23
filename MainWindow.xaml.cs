@@ -117,9 +117,10 @@ public partial class MainWindow : Window
     {
         var hasRecipe = File.Exists(CommanderKeyBinaryRecipePath);
         BtnCommanderKeyGlow.IsEnabled = !_isProcessing;
+        BtnSignalGunGlow.IsEnabled = !_isProcessing;
         TxtCommanderKeyGlowStatus.Text = hasRecipe
             ? "Commander Key recipe ready: " + Path.GetFileName(CommanderKeyBinaryRecipePath)
-            : "Commander Key will auto-search the current safe PAKs. Learn Key Glow is still preferred when you have a verified sample.";
+            : "Commander Key and Signal Gun glow will auto-search the current safe PAKs. Learn Key Glow is still preferred when you have a verified sample.";
         TxtCommanderKeyGlowStatus.Foreground = hasRecipe ? LogBrush(LogType.Success) : LogBrush(LogType.Warning);
     }
 
@@ -506,7 +507,9 @@ public partial class MainWindow : Window
     static string RangeRecipePath => Path.Combine(ManagedRecipeOutputDir, "learned_range_recipe.json");
     static string RangeBinaryRecipePath => Path.Combine(ManagedRecipeOutputDir, "learned_range_binary_patch.json");
     static string RecoilRecipePath => Path.Combine(ManagedRecipeOutputDir, "learned_recoil_recipe.json");
+    static string StableRecoilRecipePath => Path.Combine(ManagedRecipeOutputDir, "learned_recoil_deviation_recoil_scale0.125.json");
     static string RecoilBinaryRecipePath => Path.Combine(ManagedRecipeOutputDir, "learned_recoil_binary_patch.json");
+    const string RecoilProbeAssetPath = "ShadowTrackerExtra/Content/Arts_PlayerBluePrints/Weapon/MainWeapon/Rifle/AKM/BP_Rifle_AKM.uexp";
     static string CommanderKeyBinaryRecipePath => Path.Combine(ManagedRecipeOutputDir, "learned_commander_key_binary_patch.json");
     static string CommanderKeyScaleGlowRecipePath => Path.Combine(ManagedRecipeOutputDir, "learned_commander_key_scale_glow_assets.json");
     static string LegacyGlowRecipePath => Path.Combine(TestRoot, "learned_glow_recipe.json");
@@ -518,16 +521,16 @@ public partial class MainWindow : Window
     void BtnPresetRange_Click(object s, RoutedEventArgs e)
     {
         var multiplier = ParseFloatOrDefault(TxtRangeMultiplier.Text, 2f);
-        var targetPak = File.Exists(RangeBinaryRecipePath)
-            ? FindBinaryPatchSourcePak(RangeBinaryRecipePath)
-            : FindBestPakContainingAsset(PakPatchPacker.RangePhysicsAssetPath) ?? MapLobbyPak;
+        var rangeToken = FormatMultiplierToken(multiplier);
+        var targetPak = FindBestRangeTargetPak() ?? MapLobbyPak;
         if (!File.Exists(targetPak))
         {
-            Log("Range target PAK not found. Keep the original map_lobby that matches learned_range_binary_patch.json under D:\\test, or select it manually.", LogType.Error);
+            Log("Range target PAK not found. Add or browse a map_lobby PAK that contains the range PhysicsAsset.", LogType.Error);
             return;
         }
 
-        var outputPak = ResolvePresetOutputPak(targetPak, "range.pak");
+        var outputPak = ResolvePresetOutputPak(targetPak, "range" + rangeToken + ".pak");
+        Log("Range target: " + Path.GetFileName(targetPak), LogType.Accent);
         _ = RunPresetAsync("Range auto x" + multiplier.ToString("0.###"), targetPak, outputPak,
             () => ApplyAutoRangePatch(targetPak, outputPak, multiplier));
     }
@@ -538,7 +541,10 @@ public partial class MainWindow : Window
         var targetPak = FindBestRecoilTargetPak();
         if (!File.Exists(targetPak))
         {
-            Log("Recoil target PAK not found. Keep the original map_lobby that matches learned_recoil_binary_patch.json under D:\\test, or select it manually.", LogType.Error);
+            if (!File.Exists(RecoilBinaryRecipePath) && !File.Exists(RecoilRecipePath) && !File.Exists(StableRecoilRecipePath))
+                Log("Recoil recipe not found. Use Learn Recoil once from a verified original/modified map_lobby pair, then run auto again.", LogType.Error);
+            else
+                Log("Recoil target PAK not found. Add or browse a map_lobby PAK that contains the learned recoil assets.", LogType.Error);
             return;
         }
 
@@ -551,14 +557,16 @@ public partial class MainWindow : Window
     {
         var multiplier = ParseFloatOrDefault(TxtRangeMultiplier.Text, 2f);
         var scale = ParseFloatOrDefault(TxtRecoilScale.Text, 0.125f);
+        var rangeToken = FormatMultiplierToken(multiplier);
+        var recoilToken = FormatMultiplierToken(scale);
         var targetPak = FindBestRangeAndRecoilTargetPak() ?? MapLobbyPak;
         if (!File.Exists(targetPak))
         {
-            Log("Combined Range + Recoil target PAK not found. Select a PAK that contains the required assets.", LogType.Error);
+            Log("Combined Range + Recoil target PAK not found. Add or browse a map_lobby PAK that contains the range PhysicsAsset.", LogType.Error);
             return;
         }
 
-        var outputPak = ResolvePresetOutputPak(targetPak, "range_recoil.pak");
+        var outputPak = ResolvePresetOutputPak(targetPak, "range" + rangeToken + "_recoil" + recoilToken + ".pak");
         _ = RunPresetAsync("Range auto x" + multiplier.ToString("0.###") + " + Recoil auto x" + scale.ToString("0.###"),
             targetPak,
             outputPak,
@@ -597,6 +605,24 @@ public partial class MainWindow : Window
         }
 
         return FindLatestOriginalGamePatch() ?? (File.Exists(GlowGamePak) ? GlowGamePak : GlowOriginalPak);
+    }
+
+    string? FindBestRangeTargetPak()
+    {
+        if (File.Exists(RangeBinaryRecipePath))
+        {
+            var binaryTarget = FindBinaryPatchSourcePak(RangeBinaryRecipePath);
+            if (binaryTarget != null)
+            {
+                Log("Range target matched learned binary recipe: " + Path.GetFileName(binaryTarget), LogType.Accent);
+                return binaryTarget;
+            }
+
+            LogBinaryRecipeSourceMismatch(RangeBinaryRecipePath, "Range");
+            Log("No exact Range binary source matched; scanning selected and game PAKs for the PhysicsAsset.", LogType.Warning);
+        }
+
+        return FindBestPakContainingAsset(PakPatchPacker.RangePhysicsAssetPath);
     }
 
     void LogBinaryRecipeSourceMismatch(string recipePath, string label)
@@ -659,41 +685,146 @@ public partial class MainWindow : Window
 
     PakPatchPacker.Result ApplyAutoRangePatch(string targetPak, string outputPak, float multiplier)
     {
+        ValidatePositiveMultiplier(multiplier, "Range");
+
         if (File.Exists(RangeBinaryRecipePath) && Math.Abs(multiplier - 2f) < 0.0001f)
         {
-            Log("Range mode: exact binary patch recipe.", LogType.Accent);
-            return PakPatchPacker.ApplyBinaryPatchRecipe(targetPak, RangeBinaryRecipePath, outputPak);
+            try
+            {
+                Log("Range mode: exact binary patch recipe.", LogType.Accent);
+                return PakPatchPacker.ApplyBinaryPatchRecipe(targetPak, RangeBinaryRecipePath, outputPak);
+            }
+            catch (Exception ex) when (ex is InvalidDataException or InvalidOperationException or IOException)
+            {
+                Log("Exact binary range patch did not match this PAK; falling back to auto PhysicsAsset patch: " + ex.Message, LogType.Warning);
+            }
         }
 
-        throw new InvalidOperationException("Range auto currently only enables the verified x2 recipe. x5 PhysicsAsset candidates caused map_lobby load crashes and are blocked until a stable field is found.");
+        if (File.Exists(RangeRecipePath))
+        {
+            try
+            {
+                Log("Range mode: relocated learned recipe x" + multiplier.ToString("0.###") + ".", LogType.Accent);
+                return PakPatchPacker.ApplyRangeFeatureMultiplier(targetPak, RangeRecipePath, outputPak, multiplier);
+            }
+            catch (Exception ex) when (ex is InvalidDataException or InvalidOperationException or IOException)
+            {
+                Log("Learned range recipe did not match this PAK; falling back to built-in PhysicsAsset offsets: " + ex.Message, LogType.Warning);
+            }
+        }
+
+        Log("Range mode: built-in PhysicsAsset x" + multiplier.ToString("0.###") + " patch.", LogType.Accent);
+        return PakPatchPacker.ApplyRangeMultiplier(targetPak, outputPak, multiplier);
     }
 
     PakPatchPacker.Result ApplyAutoRecoilPatch(string targetPak, string outputPak, float scale)
     {
-        if (File.Exists(RecoilBinaryRecipePath) && Math.Abs(scale - 0.125f) < 0.0001f)
+        if (File.Exists(StableRecoilRecipePath))
         {
-            Log("Recoil mode: exact binary patch recipe.", LogType.Accent);
+            if (Math.Abs(scale - 0.125f) >= 0.0001f)
+                throw new InvalidOperationException("Stable Recoil currently supports only the verified 0.125 signature.");
+
+            Log("Recoil mode: stable learned Deviation+Recoil signature.", LogType.Accent);
+            return PakPatchPacker.ApplyJsonRecipeInPlaceOnly(targetPak, StableRecoilRecipePath, outputPak);
+        }
+
+        if (File.Exists(RecoilBinaryRecipePath))
+        {
+            Log("Recoil mode: exact learned binary patch recipe.", LogType.Accent);
             return PakPatchPacker.ApplyBinaryPatchRecipe(targetPak, RecoilBinaryRecipePath, outputPak);
         }
 
-        throw new InvalidOperationException("Recoil auto requires the exact learned binary recipe and matching original map_lobby PAK. Do not apply recoil to small game_patch PAKs.");
+        throw new InvalidOperationException("Recoil auto requires the stable learned Deviation+Recoil recipe. Do not apply recoil to small game_patch PAKs.");
     }
 
     PakPatchPacker.Result ApplyAutoRangeAndRecoilPatch(string targetPak, string outputPak, float rangeMultiplier, float recoilScale)
     {
-        if (Math.Abs(rangeMultiplier - 2f) >= 0.0001f)
-            throw new InvalidOperationException("Range + Recoil currently only enables the verified Range x2 recipe. x5 PhysicsAsset candidates caused map_lobby load crashes and are blocked.");
-        var rangeRecipePath = RangeBinaryRecipePath;
-        if (!File.Exists(rangeRecipePath))
-            throw new InvalidOperationException("Range + Recoil requires the learned Range x2 binary recipe.");
-        if (!File.Exists(RecoilBinaryRecipePath) || Math.Abs(recoilScale - 0.125f) >= 0.0001f)
-            throw new InvalidOperationException("Range + Recoil requires the learned Recoil 0.125 binary recipe.");
+        ValidatePositiveMultiplier(rangeMultiplier, "Range");
+        if (Math.Abs(recoilScale - 0.125f) >= 0.0001f)
+            throw new InvalidOperationException("Range + Recoil requires the learned Recoil 0.125 recipe.");
 
-        Log("Range + Recoil mode: exact binary recipe merge.", LogType.Accent);
-        return PakPatchPacker.ApplyBinaryPatchRecipes(
-            targetPak,
-            new[] { rangeRecipePath, RecoilBinaryRecipePath },
-            outputPak);
+        if (File.Exists(StableRecoilRecipePath))
+        {
+            Log("Range + Recoil mode: Range x" + rangeMultiplier.ToString("0.###") + " + stable Deviation+Recoil signature.", LogType.Accent);
+            return PakPatchPacker.ApplyRangeMultiplierAndJsonRecipeInPlaceOnly(
+                targetPak,
+                StableRecoilRecipePath,
+                outputPak,
+                rangeMultiplier);
+        }
+
+        if (File.Exists(RangeBinaryRecipePath) && File.Exists(RecoilBinaryRecipePath))
+        {
+            Log("Range + Recoil mode: exact binary recipe merge.", LogType.Accent);
+            try
+            {
+                return PakPatchPacker.ApplyBinaryPatchRecipes(
+                    targetPak,
+                    new[] { RangeBinaryRecipePath, RecoilBinaryRecipePath },
+                    outputPak);
+            }
+            catch (Exception ex) when (ex is InvalidDataException or InvalidOperationException or IOException)
+            {
+                if (!File.Exists(RecoilRecipePath))
+                    throw;
+
+                Log("Exact binary combo did not match this PAK; falling back to custom Range + learned Recoil recipe: " + ex.Message, LogType.Warning);
+            }
+        }
+
+        if (File.Exists(RecoilBinaryRecipePath))
+        {
+            Directory.CreateDirectory(Path.GetDirectoryName(outputPak) ?? ".");
+            var tempPak = Path.Combine(
+                Path.GetDirectoryName(outputPak) ?? ".",
+                Path.GetFileNameWithoutExtension(outputPak) + ".recoil.tmp.pak");
+            try
+            {
+                Log("Range + Recoil mode: learned Recoil binary + Range x" + rangeMultiplier.ToString("0.###") + ".", LogType.Accent);
+                PakPatchPacker.ApplyBinaryPatchRecipe(targetPak, RecoilBinaryRecipePath, tempPak);
+                return PakPatchPacker.ApplyRangeMultiplier(tempPak, outputPak, rangeMultiplier);
+            }
+            finally
+            {
+                if (File.Exists(tempPak))
+                    File.Delete(tempPak);
+            }
+        }
+
+        try
+        {
+            Directory.CreateDirectory(Path.GetDirectoryName(outputPak) ?? ".");
+            var tempPak = Path.Combine(
+                Path.GetDirectoryName(outputPak) ?? ".",
+                Path.GetFileNameWithoutExtension(outputPak) + ".recoil.tmp.pak");
+            try
+            {
+                Log("Range + Recoil mode: semantic Recoil + Range x" + rangeMultiplier.ToString("0.###") + ".", LogType.Accent);
+                PakPatchPacker.ApplySemanticRecoilScale(targetPak, tempPak, recoilScale);
+                return PakPatchPacker.ApplyRangeMultiplier(tempPak, outputPak, rangeMultiplier);
+            }
+            finally
+            {
+                if (File.Exists(tempPak))
+                    File.Delete(tempPak);
+            }
+        }
+        catch (Exception ex) when (ex is InvalidDataException or InvalidOperationException or IOException)
+        {
+            Log("Semantic Range + Recoil patch did not complete; checking learned JSON fallback: " + ex.Message, LogType.Warning);
+        }
+
+        if (File.Exists(RecoilRecipePath))
+        {
+            Log("Range + Recoil mode: Range x" + rangeMultiplier.ToString("0.###") + " + learned Recoil recipe.", LogType.Accent);
+            return PakPatchPacker.ApplyRangeMultiplierAndJsonRecipeInPlaceOnly(
+                targetPak,
+                RecoilRecipePath,
+                outputPak,
+                rangeMultiplier);
+        }
+
+        throw new InvalidOperationException("Range + Recoil requires learned Recoil recipe. Use Learn Recoil once from a verified original/modified pair, then run auto again.");
     }
 
     string RelocateRecipeForTarget(string targetPak, string sourceRecipePath, string label)
@@ -847,21 +978,33 @@ public partial class MainWindow : Window
                 return binaryTarget;
         }
 
-        if (File.Exists(RecoilRecipePath))
-            return FindBestPakContainingAnyAsset(LoadRecipeAssetPaths(RecoilRecipePath), minSize: 100_000_000);
+        var recoilAssetRecipePath = File.Exists(StableRecoilRecipePath)
+            ? StableRecoilRecipePath
+            : File.Exists(RecoilRecipePath) ? RecoilRecipePath : null;
+        if (recoilAssetRecipePath != null)
+            return FindBestPakContainingAnyAsset(LoadRecipeAssetPaths(recoilAssetRecipePath), minSize: 100_000_000);
 
-        return null;
+        return FindBestPakContainingAsset(RecoilProbeAssetPath);
     }
 
     string? FindBestRangeAndRecoilTargetPak()
     {
-        if (!File.Exists(RecoilRecipePath))
-            return null;
+        if (File.Exists(RangeBinaryRecipePath) && File.Exists(RecoilBinaryRecipePath))
+        {
+            var binaryTarget = FindBinaryPatchSourcePak(RangeBinaryRecipePath);
+            if (binaryTarget != null)
+                return binaryTarget;
+        }
 
-        var required = LoadRecipeAssetPaths(RecoilRecipePath)
-            .Concat(new[] { PakPatchPacker.RangePhysicsAssetPath })
-            .Distinct(StringComparer.Ordinal)
-            .ToList();
+        var recoilAssetRecipePath = File.Exists(StableRecoilRecipePath)
+            ? StableRecoilRecipePath
+            : File.Exists(RecoilRecipePath) ? RecoilRecipePath : null;
+        var required = recoilAssetRecipePath != null
+            ? LoadRecipeAssetPaths(recoilAssetRecipePath)
+                .Concat(new[] { PakPatchPacker.RangePhysicsAssetPath })
+                .Distinct(StringComparer.Ordinal)
+                .ToList()
+            : new List<string> { PakPatchPacker.RangePhysicsAssetPath };
         var selected = _selectedFiles
             .Select(item => item.FullPath)
             .Where(File.Exists)
@@ -979,6 +1122,7 @@ public partial class MainWindow : Window
             BtnPresetRecoil.IsEnabled = false;
             BtnCommanderKeyGlow.IsEnabled = false;
             BtnLearnCommanderKeyGlow.IsEnabled = false;
+            BtnSignalGunGlow.IsEnabled = false;
             BtnSkinMaterialGlow.IsEnabled = false;
             BtnLearnGlowBinary.IsEnabled = false;
             BtnPresetGlow.IsEnabled = false;
@@ -1052,6 +1196,7 @@ public partial class MainWindow : Window
                 BtnPresetRecoil.IsEnabled = true;
                 BtnCommanderKeyGlow.IsEnabled = true;
                 BtnLearnCommanderKeyGlow.IsEnabled = true;
+                BtnSignalGunGlow.IsEnabled = true;
                 BtnSkinMaterialGlow.IsEnabled = true;
                 BtnLearnGlowBinary.IsEnabled = true;
                 BtnPresetGlow.IsEnabled = true;
@@ -1146,6 +1291,20 @@ public partial class MainWindow : Window
             });
     }
 
+    void BtnSignalGunGlow_Click(object s, RoutedEventArgs e)
+    {
+        var targetPak = FindBestSignalGunTargetPak();
+        if (!File.Exists(targetPak))
+        {
+            Log("Signal Gun target PAK not found. Add or browse a map_lobby PAK that contains FlareGun assets.", LogType.Error);
+            return;
+        }
+
+        var outputPak = ResolvePresetOutputPak(targetPak, "signal_gun_scale3x.pak");
+        _ = RunPresetAsync("Signal Gun Scale x3", targetPak, outputPak,
+            () => PakPatchPacker.ApplySignalGunScaleOnly(targetPak, outputPak, 3f));
+    }
+
     string? FindBestCommanderKeyTargetPak()
     {
         if (File.Exists(CommanderKeyBinaryRecipePath))
@@ -1178,6 +1337,31 @@ public partial class MainWindow : Window
             : FindCommanderKeyFuzzyMatches(candidates);
 
         return fuzzyMatches
+            .Select(path => BuildPakCandidateRank(path, selected))
+            .OrderByDescending(x => x.IsSelected)
+            .ThenByDescending(x => x.Version)
+            .ThenByDescending(x => x.LastWrite)
+            .ThenByDescending(x => x.Size)
+            .Select(x => x.Path)
+            .FirstOrDefault();
+    }
+
+    string? FindBestSignalGunTargetPak()
+    {
+        var selected = _selectedFiles
+            .Select(item => item.FullPath)
+            .Where(File.Exists)
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .ToList();
+        var candidates = selected
+            .Concat(EnumerateKnownOriginalPakCandidates())
+            .Concat(EnumerateExtraPakSearchRoots())
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .Where(path => !IsUnsafeAutoSkinTarget(path))
+            .ToList();
+
+        return candidates
+            .Where(path => PakPatchPacker.PakContainsAsset(path, PakPatchPacker.SignalGunWrapperPath))
             .Select(path => BuildPakCandidateRank(path, selected))
             .OrderByDescending(x => x.IsSelected)
             .ThenByDescending(x => x.Version)
@@ -1563,6 +1747,12 @@ public partial class MainWindow : Window
         return float.TryParse(text, out var value) && float.IsFinite(value) ? value : fallback;
     }
 
+    static void ValidatePositiveMultiplier(float multiplier, string label)
+    {
+        if (!float.IsFinite(multiplier) || multiplier <= 0f)
+            throw new InvalidOperationException(label + " multiplier must be greater than 0.");
+    }
+
     async Task ApplyRecipePresetAsync(string presetName, string templateOriginalPak, string defaultOutputName, string recipePath)
     {
         await ApplyRecipePresetAsync(presetName, templateOriginalPak, defaultOutputName, recipePath,
@@ -1610,6 +1800,12 @@ public partial class MainWindow : Window
         return string.IsNullOrWhiteSpace(token) ? fallback : token;
     }
 
+    static string FormatMultiplierToken(float value)
+    {
+        var token = value.ToString("0.###", CultureInfo.InvariantCulture).Replace('.', 'p');
+        return SanitizeFileToken(token, "custom");
+    }
+
     async Task ApplyValuePresetAsync(string presetName, string templateOriginalPak, string defaultOutputName, Func<string, string, PakPatchPacker.Result> apply)
     {
         if (_isProcessing) return;
@@ -1650,6 +1846,7 @@ public partial class MainWindow : Window
             BtnPresetRecoil.IsEnabled = false;
             BtnCommanderKeyGlow.IsEnabled = false;
             BtnLearnCommanderKeyGlow.IsEnabled = false;
+            BtnSignalGunGlow.IsEnabled = false;
             BtnSkinMaterialGlow.IsEnabled = false;
             BtnLearnGlowBinary.IsEnabled = false;
             BtnPresetGlow.IsEnabled = false;
@@ -1701,6 +1898,7 @@ public partial class MainWindow : Window
                 BtnPresetRecoil.IsEnabled = true;
                 BtnCommanderKeyGlow.IsEnabled = true;
                 BtnLearnCommanderKeyGlow.IsEnabled = true;
+                BtnSignalGunGlow.IsEnabled = true;
                 BtnSkinMaterialGlow.IsEnabled = true;
                 BtnLearnGlowBinary.IsEnabled = true;
                 BtnPresetGlow.IsEnabled = true;

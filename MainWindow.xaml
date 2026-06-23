@@ -229,6 +229,7 @@
                                                 <ColumnDefinition Width="Auto"/>
                                                 <ColumnDefinition Width="Auto"/>
                                                 <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="Auto"/>
                                             </Grid.ColumnDefinitions>
                                             <TextBlock Grid.Column="0"
                                                        x:Name="TxtCommanderKeyGlowStatus"
@@ -247,6 +248,10 @@
                                                     Content="Skin Glow"
                                                     Style="{StaticResource SecondaryButton}" MinWidth="132"
                                                     Margin="8,0,0,0" Click="BtnSkinMaterialGlow_Click"/>
+                                            <Button Grid.Column="4" x:Name="BtnSignalGunGlow"
+                                                    Content="Signal 3x"
+                                                    Style="{StaticResource SecondaryButton}" MinWidth="116"
+                                                    Margin="8,0,0,0" Click="BtnSignalGunGlow_Click"/>
                                         </Grid>
                                     </Grid>
                                 </Border>

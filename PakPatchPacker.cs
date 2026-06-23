@@ -3,6 +3,8 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
+using UAssetAPI;
+using UAssetAPI.UnrealTypes;
 
 namespace PakToolGUI;
 
@@ -349,6 +351,30 @@ public static class PakPatchPacker
         });
     }
 
+    public static Result ApplyRangeMultiplierAndJsonRecipeInPlaceOnly(string targetOriginalPak, string recipePath, string outputPak, float multiplier)
+    {
+        Directory.CreateDirectory(Path.GetDirectoryName(outputPak) ?? ".");
+        var tempPak = Path.Combine(
+            Path.GetDirectoryName(outputPak) ?? ".",
+            Path.GetFileNameWithoutExtension(outputPak) + ".range.tmp.pak");
+
+        try
+        {
+            var rangeResult = ApplyRangeMultiplier(targetOriginalPak, tempPak, multiplier);
+            var recipeResult = ApplyJsonRecipeInPlaceOnly(tempPak, recipePath, outputPak);
+            return new Result(
+                recipeResult.TotalFiles,
+                rangeResult.MatchedFiles + recipeResult.MatchedFiles,
+                rangeResult.ChangedFiles + recipeResult.ChangedFiles,
+                recipeResult.OutputSize);
+        }
+        finally
+        {
+            if (File.Exists(tempPak))
+                File.Delete(tempPak);
+        }
+    }
+
     public static Result ApplyRangeFeatureMultiplier(string targetOriginalPak, string rangeRecipePath, string outputPak, float multiplier)
     {
         var signature = LoadRangeFeatureSignature(rangeRecipePath);
@@ -393,6 +419,58 @@ public static class PakPatchPacker
                 }
             }),
             StringComparer.Ordinal));
+    }
+
+    public static Result ApplySemanticRecoilScale(string targetOriginalPak, string outputPak, float scale)
+    {
+        var target = ReadOriginalPak(targetOriginalPak);
+        var entriesByPath = target.Entries.ToDictionary(e => e.Path, StringComparer.Ordinal);
+        var changedFiles = new List<ChangedFile>();
+        var matched = 0;
+
+        using (var input = new FileStream(targetOriginalPak, FileMode.Open, FileAccess.Read, FileShare.Read))
+        {
+            foreach (var entry in target.Entries)
+            {
+                if (!IsSemanticRecoilBlueprintUexp(entry.Path))
+                    continue;
+
+                var uassetPath = Path.ChangeExtension(entry.Path, ".uasset");
+                if (!entriesByPath.TryGetValue(uassetPath, out var uassetEntry))
+                    continue;
+
+                var uassetData = ReadEntryContent(input, uassetEntry);
+                ComputeOriginalContentHash(input, entry);
+                var data = ReadEntryContent(input, entry);
+                var recoilNameIndexes = ExtractSemanticRecoilNameIndexes(uassetData, data, entry.Path);
+                if (recoilNameIndexes.Count == 0)
+                    continue;
+
+                var changed = ApplySemanticRecoilFloats(data, recoilNameIndexes, scale);
+                if (changed == 0)
+                    continue;
+
+                matched += changed;
+                changedFiles.Add(new ChangedFile(entry, data));
+            }
+        }
+
+        if (changedFiles.Count == 0)
+            throw new InvalidOperationException("No semantic recoil FloatProperty values were found in the selected PAK.");
+
+        if (!TryBuildInPlacePatchesPreserveIndex(target, changedFiles, out var patches, out var reason))
+            throw new InvalidOperationException("Semantic recoil in-place patch failed: " + reason);
+
+        Directory.CreateDirectory(Path.GetDirectoryName(outputPak) ?? ".");
+        File.Copy(targetOriginalPak, outputPak, true);
+        using var output = new FileStream(outputPak, FileMode.Open, FileAccess.Write, FileShare.None, 4096 * 1024);
+        foreach (var patch in patches)
+        {
+            output.Position = patch.Offset;
+            output.Write(patch.Data);
+        }
+
+        return new Result(target.Entries.Count, matched, changedFiles.Count, new FileInfo(outputPak).Length);
     }
 
     public static IReadOnlyList<string> LearnRecoilAssetPaths(string templateOriginalPak, string templateModifiedPak)
@@ -632,6 +710,14 @@ public static class PakPatchPacker
     public const string CommanderKeyMaterialPath = "ShadowTrackerExtra/Content/Mod/_Item_Common/_Goods/_YY/_CG036/KEY/Art_Player/Material/M_Sale_Zhihuiguan.uasset";
     private const string CommanderKeyMaterialFolder = "ShadowTrackerExtra/Content/Mod/_Item_Common/_Goods/_YY/_CG036/KEY/Art_Player/Material/";
     private const string CommanderKeyMaterialName = "M_Sale_Zhihuiguan.uasset";
+    public const string SignalGunWrapperPath = "ShadowTrackerExtra/Content/Arts_PlayerBluePrints/Weapon/MainWeapon/Pistol/Flaregun/BP_Pistol_Flaregun_Wrapper.uexp";
+    private const string SignalGunMaterialFolder = "ShadowTrackerExtra/Content/Arts_Player/Weapon/MainWeapon/Pistol/FlareGun/Texture/";
+    private static readonly string[] SignalGunMaterialNames =
+    {
+        "M_WEP_FlareGun.uasset",
+        "M_WEP_FlareGun_Lod.uasset",
+        "M_WEP_FlareGun_Pickup.uasset"
+    };
 
     public static Result ApplyCommanderKeyGlow(string targetOriginalPak, string outputPak, float red, float green, float blue, float intensity)
     {
@@ -665,7 +751,7 @@ public static class PakPatchPacker
         if (changedFiles.Count == 0)
             throw new InvalidOperationException("Commander Key materials were found, but none exposed supported glow/color parameters.");
 
-        if (!TryBuildInPlacePatches(target, changedFiles, out var patches, out var reason))
+        if (!TryBuildInPlacePatchesPreserveIndex(target, changedFiles, out var patches, out var reason))
             throw new InvalidOperationException("Commander Key in-place patch failed: " + reason);
 
         Directory.CreateDirectory(Path.GetDirectoryName(outputPak) ?? ".");
@@ -678,6 +764,76 @@ public static class PakPatchPacker
         }
 
         return new Result(target.Entries.Count, entries.Count, changedFiles.Count, new FileInfo(outputPak).Length);
+    }
+
+    public static Result ApplySignalGunGlowAndScale(string targetOriginalPak, string outputPak, float red, float green, float blue, float intensity, float scale)
+    {
+        return ApplySignalGunGlowAndScale(targetOriginalPak, outputPak, red, green, blue, intensity, scale, patchGlow: true, patchScale: true);
+    }
+
+    public static Result ApplySignalGunGlowOnly(string targetOriginalPak, string outputPak, float red, float green, float blue, float intensity)
+    {
+        return ApplySignalGunGlowAndScale(targetOriginalPak, outputPak, red, green, blue, intensity, scale: 1f, patchGlow: true, patchScale: false);
+    }
+
+    public static Result ApplySignalGunScaleOnly(string targetOriginalPak, string outputPak, float scale)
+    {
+        return ApplySignalGunGlowAndScale(targetOriginalPak, outputPak, red: 0f, green: 1f, blue: 0.4f, intensity: 0f, scale, patchGlow: false, patchScale: true);
+    }
+
+    private static Result ApplySignalGunGlowAndScale(string targetOriginalPak, string outputPak, float red, float green, float blue, float intensity, float scale, bool patchGlow, bool patchScale)
+    {
+        red = ClampColorComponent(red);
+        green = ClampColorComponent(green);
+        blue = ClampColorComponent(blue);
+        intensity = Math.Max(0f, float.IsFinite(intensity) ? intensity : 0f);
+        scale = Math.Max(0.01f, float.IsFinite(scale) ? scale : 1f);
+
+        var target = ReadOriginalPak(targetOriginalPak);
+        var entriesByPath = target.Entries.ToDictionary(e => e.Path, StringComparer.OrdinalIgnoreCase);
+        var materialEntries = ResolveSignalGunMaterialEntries(target.Entries);
+        var changedFiles = new List<ChangedFile>();
+
+        using (var input = new FileStream(targetOriginalPak, FileMode.Open, FileAccess.Read, FileShare.Read))
+        {
+            if (patchGlow)
+            {
+                foreach (var entry in materialEntries)
+                {
+                    ComputeOriginalContentHash(input, entry);
+                    var data = ReadEntryContent(input, entry);
+                    if (!UAssetParser.TryApplyMaterialGlow(data, entry.Path, red, green, blue, intensity, out var patched, out _))
+                        continue;
+                    if (!data.SequenceEqual(patched))
+                        changedFiles.Add(new ChangedFile(entry, patched));
+                }
+            }
+
+            if (patchScale && entriesByPath.TryGetValue(SignalGunWrapperPath, out var wrapperEntry))
+            {
+                ComputeOriginalContentHash(input, wrapperEntry);
+                var data = ReadEntryContent(input, wrapperEntry);
+                if (TryPatchSignalGunWrapperScale(data, scale))
+                    changedFiles.Add(new ChangedFile(wrapperEntry, data));
+            }
+        }
+
+        if (changedFiles.Count == 0)
+            throw new InvalidOperationException("Signal gun requested materials/scale were not found or could not be patched.");
+
+        if (!TryBuildInPlacePatchesPreserveIndex(target, changedFiles, out var patches, out var reason))
+            throw new InvalidOperationException("Signal gun glow/scale in-place patch failed: " + reason);
+
+        Directory.CreateDirectory(Path.GetDirectoryName(outputPak) ?? ".");
+        File.Copy(targetOriginalPak, outputPak, true);
+        using var output = new FileStream(outputPak, FileMode.Open, FileAccess.Write, FileShare.None, 4096 * 1024);
+        foreach (var patch in patches)
+        {
+            output.Position = patch.Offset;
+            output.Write(patch.Data);
+        }
+
+        return new Result(target.Entries.Count, materialEntries.Count + 1, changedFiles.Count, new FileInfo(outputPak).Length);
     }
 
     private static Entry? ResolveCommanderKeyEntry(IEnumerable<Entry> entries)
@@ -724,6 +880,35 @@ public static class PakPatchPacker
     private static bool IsCommanderKeyMaterial(string path)
     {
         return path.EndsWith(CommanderKeyMaterialName, StringComparison.OrdinalIgnoreCase);
+    }
+
+    private static List<Entry> ResolveSignalGunMaterialEntries(IEnumerable<Entry> entries)
+    {
+        return entries
+            .Where(entry => entry.Path.StartsWith(SignalGunMaterialFolder, StringComparison.OrdinalIgnoreCase)
+                && SignalGunMaterialNames.Any(name => entry.Path.EndsWith(name, StringComparison.OrdinalIgnoreCase)))
+            .OrderBy(entry => entry.Path, StringComparer.OrdinalIgnoreCase)
+            .ToList();
+    }
+
+    private static bool TryPatchSignalGunWrapperScale(byte[] data, float scale)
+    {
+        var changed = false;
+        for (var offset = 0; offset + 12 <= data.Length; offset++)
+        {
+            var x = BitConverter.ToSingle(data, offset);
+            var y = BitConverter.ToSingle(data, offset + 4);
+            var z = BitConverter.ToSingle(data, offset + 8);
+            if (Math.Abs(x - 1.5f) > 0.0001f || Math.Abs(y - 1.5f) > 0.0001f || Math.Abs(z - 1.5f) > 0.0001f)
+                continue;
+
+            WriteF32(data, offset, scale);
+            WriteF32(data, offset + 4, scale);
+            WriteF32(data, offset + 8, scale);
+            changed = true;
+        }
+
+        return changed;
     }
 
     public static Result ApplySkinMaterialGlowFromCsv(string targetOriginalPak, string csvPath, string outputPak, float red, float green, float blue, float intensity)
@@ -1311,7 +1496,7 @@ public static class PakPatchPacker
         if (changedFiles.Count == 0)
             throw new InvalidOperationException("No matching files found for this value patch.");
 
-        if (!TryBuildInPlacePatches(target, changedFiles, out var patches, out var reason))
+        if (!TryBuildInPlacePatchesPreserveIndex(target, changedFiles, out var patches, out var reason))
             throw new InvalidOperationException("In-place patch failed: " + reason);
 
         Directory.CreateDirectory(Path.GetDirectoryName(outputPak) ?? ".");
@@ -1722,6 +1907,155 @@ public static class PakPatchPacker
         return abs == 0 || abs is >= 0.000001f and <= 100000f;
     }
 
+    private static bool IsSemanticRecoilBlueprintUexp(string path)
+    {
+        if (!path.Contains("/Weapon/MainWeapon/", StringComparison.Ordinal)
+            || !path.EndsWith(".uexp", StringComparison.Ordinal))
+        {
+            return false;
+        }
+
+        var fileName = GetPakFileNameWithoutExtension(path);
+        if (!fileName.StartsWith("BP_", StringComparison.Ordinal))
+            return false;
+
+        return !fileName.Contains("Wrapper", StringComparison.OrdinalIgnoreCase)
+            && !fileName.Contains("BattleItemHandle", StringComparison.OrdinalIgnoreCase)
+            && !fileName.Contains("SoundDataSet", StringComparison.OrdinalIgnoreCase)
+            && !fileName.StartsWith("BP_Mag_", StringComparison.OrdinalIgnoreCase);
+    }
+
+    private static HashSet<int> ExtractSemanticRecoilNameIndexes(byte[] uassetData, byte[] uexpData, string uexpPath)
+    {
+        var scratchDir = Path.Combine(Path.GetTempPath(), "PakToolGUI_RecoilNames_" + Guid.NewGuid().ToString("N"));
+        Directory.CreateDirectory(scratchDir);
+        var assetName = GetPakFileNameWithoutExtension(uexpPath);
+        var assetPath = Path.Combine(scratchDir, assetName + ".uasset");
+        var uexpTempPath = Path.Combine(scratchDir, assetName + ".uexp");
+        try
+        {
+            File.WriteAllBytes(assetPath, uassetData);
+            File.WriteAllBytes(uexpTempPath, uexpData);
+            var asset = new UAsset(assetPath, EngineVersion.VER_UE4_16);
+            var names = asset.GetNameMapIndexList();
+            var result = new HashSet<int>();
+            for (var i = 0; i < names.Count; i++)
+            {
+                if (IsSemanticRecoilFloatName(names[i].ToString()))
+                    result.Add(i);
+            }
+
+            return result;
+        }
+        catch
+        {
+            return new HashSet<int>();
+        }
+        finally
+        {
+            try { Directory.Delete(scratchDir, true); } catch { }
+        }
+    }
+
+    private static bool IsSemanticRecoilFloatName(string name)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+            return false;
+        return name.Equals("RecoilCurveArray", StringComparison.OrdinalIgnoreCase)
+            || name.Equals("RecoilValueFail", StringComparison.OrdinalIgnoreCase)
+            || name.Equals("RecoilModifierCrouch", StringComparison.OrdinalIgnoreCase)
+            || name.Equals("RecoilModifierProne", StringComparison.OrdinalIgnoreCase)
+            || name.Equals("RecoilHorizontalMinScalar", StringComparison.OrdinalIgnoreCase)
+            || name.Equals("RecoilModifierStand", StringComparison.OrdinalIgnoreCase)
+            || name.Equals("RecoilCurveEnd", StringComparison.OrdinalIgnoreCase)
+            || name.Equals("RecoilCurveStart", StringComparison.OrdinalIgnoreCase)
+            || name.Equals("RecoilCurveOneBurstStart", StringComparison.OrdinalIgnoreCase)
+            || name.Equals("DeviationRecoilGainAim", StringComparison.OrdinalIgnoreCase)
+            || name.Equals("DeviationBaseADS", StringComparison.OrdinalIgnoreCase)
+            || name.Equals("DeviationStanceJump", StringComparison.OrdinalIgnoreCase)
+            || name.Equals("DeviationMoveMultiplier", StringComparison.OrdinalIgnoreCase)
+            || name.Equals("DeviationRecoilGainADS", StringComparison.OrdinalIgnoreCase)
+            || name.Equals("DeviationRecoilGain", StringComparison.OrdinalIgnoreCase)
+            || name.Equals("DeviationStanceProne", StringComparison.OrdinalIgnoreCase)
+            || name.Equals("DeviationStanceCrouch", StringComparison.OrdinalIgnoreCase)
+            || name.Equals("DeviationMax", StringComparison.OrdinalIgnoreCase)
+            || name.Equals("DeviationBaseAim", StringComparison.OrdinalIgnoreCase)
+            || name.Equals("DeviationMaxMove", StringComparison.OrdinalIgnoreCase)
+            || name.Equals("DeviationStanceStand", StringComparison.OrdinalIgnoreCase)
+            || name.Equals("DeviationMoveMaxRefrence", StringComparison.OrdinalIgnoreCase)
+            || name.Equals("DeviationMoveMinRefrence", StringComparison.OrdinalIgnoreCase);
+    }
+
+    private static string GetPakFileNameWithoutExtension(string path)
+    {
+        var fileName = path.Split('/').LastOrDefault() ?? path;
+        var extension = fileName.LastIndexOf('.');
+        return extension > 0 ? fileName[..extension] : fileName;
+    }
+
+    private static int ApplySemanticRecoilFloats(byte[] data, IReadOnlySet<int> recoilNameIndexes, float scale)
+    {
+        var changed = 0;
+        for (var valueOffset = 0; valueOffset + 8 <= data.Length; valueOffset++)
+        {
+            var nameIndexOffset = valueOffset + 4;
+            var nameIndex = BinaryPrimitives.ReadInt32LittleEndian(data.AsSpan(nameIndexOffset, 4));
+            if (!recoilNameIndexes.Contains(nameIndex))
+                continue;
+
+            var current = BitConverter.ToSingle(data, valueOffset);
+            if (!IsLikelySemanticRecoilValue(current))
+                continue;
+            if (!HasSerializedFloatPropertyPrefix(data, valueOffset))
+                continue;
+
+            WriteF32(data, valueOffset, current * scale);
+            changed++;
+        }
+
+        return changed;
+    }
+
+    private static bool HasSerializedFloatPropertyPrefix(byte[] data, int valueOffset)
+    {
+        var start = Math.Max(0, valueOffset - 24);
+        var end = Math.Max(0, valueOffset - 12);
+        for (var marker = start; marker <= end; marker++)
+        {
+            if (marker + 16 <= data.Length && IsSerializedFloatPropertyPrefix(data, marker))
+                return true;
+        }
+
+        return false;
+    }
+
+    private static bool IsSerializedFloatPropertyPrefix(byte[] data, int marker)
+    {
+        return data[marker + 1] == 0
+            && data[marker + 2] == 0
+            && data[marker + 3] == 0
+            && data[marker + 4] == 0
+            && data[marker + 5] == 0
+            && data[marker + 6] == 0
+            && data[marker + 7] == 0
+            && data[marker + 8] == 0x04
+            && data[marker + 9] == 0
+            && data[marker + 10] == 0
+            && data[marker + 11] == 0
+            && data[marker + 12] == 0
+            && data[marker + 13] == 0
+            && data[marker + 14] == 0
+            && data[marker + 15] == 0;
+    }
+
+    private static bool IsLikelySemanticRecoilValue(float value)
+    {
+        if (!float.IsFinite(value))
+            return false;
+        var abs = Math.Abs(value);
+        return abs >= 0.001f && abs <= 20f;
+    }
+
     private static List<RecoilPatchOp> LearnRecoilPatchOps(string templateOriginalPak, string templateModifiedPak)
     {
         var original = ReadOriginalPak(templateOriginalPak);
@@ -1855,6 +2189,26 @@ public static class PakPatchPacker
 
         if (!TryAddIndexAndFooterPatches(pak, patches, out reason))
             return false;
+
+        return true;
+    }
+
+    private static bool TryBuildInPlacePatchesPreserveIndex(
+        PakData pak,
+        IReadOnlyList<ChangedFile> changedFiles,
+        out List<InPlacePatch> patches,
+        out string reason)
+    {
+        patches = new List<InPlacePatch>();
+        reason = "";
+
+        foreach (var changed in changedFiles)
+        {
+            var localPatches = new List<InPlacePatch>();
+            if (!TryBuildSingleInPlacePatch(changed.Entry, changed.Data, localPatches, out reason))
+                return false;
+            patches.AddRange(localPatches);
+        }
 
         return true;
     }
